@@ -1,0 +1,1378 @@
+{
+  "location": {
+    "name": "Porto Alegre",
+    "state": "RS",
+    "country": "Brasil"
+  },
+  "timezone": "America/Sao_Paulo",
+  "generatedAt": "2026-11-11T12:10:41-03:00",
+  "sourceLastDate": "2026-11-10",
+  "sourceDelayDays": 1,
+  "model": {
+    "type": "LightGBM + HistGradientBoosting ensemble",
+    "strategy": "direct multi-horizon",
+    "horizons": [
+      1,
+      2,
+      3,
+      5,
+      7,
+      10,
+      14,
+      21,
+      30
+    ],
+    "outputs": [
+      "temperature",
+      "temperatureMin",
+      "temperatureMax",
+      "humidity",
+      "precipitation",
+      "windSpeed",
+      "pressure",
+      "cloudiness"
+    ],
+    "metrics": {
+      "temperatura": {
+        "1": {
+          "mae": 1.7148277619963956,
+          "rmse": 2.2873356738155577,
+          "mae_persistencia": 1.9574014266750766,
+          "r2": 0.8014935282895392,
+          "mae_lgbm": 1.3309312936017867,
+          "mae_hgb": 1.2781220674312253
+        },
+        "2": {
+          "mae": 2.1897066872639726,
+          "rmse": 2.849897047102369,
+          "mae_persistencia": 1.9577638223128777,
+          "r2": 0.6939320509402614,
+          "mae_lgbm": 1.7216201346688587,
+          "mae_hgb": 1.1248290553774287
+        },
+        "3": {
+          "mae": 2.3663573522167374,
+          "rmse": 3.0659752714903705,
+          "mae_persistencia": 1.9577638223128777,
+          "r2": 0.6459500364638739,
+          "mae_lgbm": 1.7854421079863498,
+          "mae_hgb": 1.1688937057962498
+        },
+        "5": {
+          "mae": 2.4971253598649477,
+          "rmse": 3.224590271352139,
+          "mae_persistencia": 1.9577638223128777,
+          "r2": 0.6086588465384815,
+          "mae_lgbm": 1.8422852422049543,
+          "mae_hgb": 1.1740878224460616
+        },
+        "7": {
+          "mae": 2.5302935354341756,
+          "rmse": 3.275940222490867,
+          "mae_persistencia": 1.9577638223128777,
+          "r2": 0.5960721516643054,
+          "mae_lgbm": 1.8473039731653542,
+          "mae_hgb": 1.1706574956585314
+        },
+        "10": {
+          "mae": 2.5638375896876497,
+          "rmse": 3.310571961928107,
+          "mae_persistencia": 1.9576183330688344,
+          "r2": 0.5875894856334204,
+          "mae_lgbm": 1.9156408569502168,
+          "mae_hgb": 1.1887582319685313
+        },
+        "14": {
+          "mae": 2.551042040759254,
+          "rmse": 3.2978821808058405,
+          "mae_persistencia": 1.9583834106312163,
+          "r2": 0.5910444538645104,
+          "mae_lgbm": 1.9451276438006275,
+          "mae_hgb": 1.1821045125431704
+        },
+        "21": {
+          "mae": 2.589389437736813,
+          "rmse": 3.349182443557205,
+          "mae_persistencia": 1.9580658028110434,
+          "r2": 0.5782154792376766,
+          "mae_lgbm": 1.851242587185388,
+          "mae_hgb": 1.173596022053826
+        },
+        "30": {
+          "mae": 2.6969705292916353,
+          "rmse": 3.4843550572730706,
+          "mae_persistencia": 1.9589180799884693,
+          "r2": 0.5428952198249419,
+          "mae_lgbm": 1.9830061709513782,
+          "mae_hgb": 1.1863128828462073
+        }
+      },
+      "temperatura_minima": {
+        "1": {
+          "mae": 2.0138549000494166,
+          "rmse": 2.662329223807085,
+          "mae_persistencia": 2.3647867119667803,
+          "r2": 0.7442613621012133,
+          "mae_lgbm": 1.5386207980968396,
+          "mae_hgb": 1.4103545995408329
+        },
+        "2": {
+          "mae": 2.479218483447723,
+          "rmse": 3.2344890893906397,
+          "mae_persistencia": 2.3657628398791544,
+          "r2": 0.6263860711158419,
+          "mae_lgbm": 1.8015817093726834,
+          "mae_hgb": 1.5429069432211189
+        },
+        "3": {
+          "mae": 2.6612222233549505,
+          "rmse": 3.4523899037645647,
+          "mae_persistencia": 2.3657628398791544,
+          "r2": 0.5747478524949221,
+          "mae_lgbm": 2.122674951128061,
+          "mae_hgb": 1.3567614725515078
+        },
+        "5": {
+          "mae": 2.8138990418640093,
+          "rmse": 3.624346808911293,
+          "mae_persistencia": 2.3657628398791544,
+          "r2": 0.5313050962603635,
+          "mae_lgbm": 2.129873972575983,
+          "mae_hgb": 1.4008216077073983
+        },
+        "7": {
+          "mae": 2.8584235688758186,
+          "rmse": 3.6763326702217123,
+          "mae_persistencia": 2.3657628398791544,
+          "r2": 0.5175635451095564,
+          "mae_lgbm": 2.2405384721224535,
+          "mae_hgb": 1.3953697426213478
+        },
+        "10": {
+          "mae": 2.8929500635017855,
+          "rmse": 3.728035822628173,
+          "mae_persistencia": 2.3655761239138644,
+          "r2": 0.5039505963398687,
+          "mae_lgbm": 2.2219115124018076,
+          "mae_hgb": 1.406204331441947
+        },
+        "14": {
+          "mae": 2.894492954743836,
+          "rmse": 3.7211973145360204,
+          "mae_persistencia": 2.366273620559335,
+          "r2": 0.5057825353319443,
+          "mae_lgbm": 2.1632779787614824,
+          "mae_hgb": 1.3985954432350143
+        },
+        "21": {
+          "mae": 2.9503210889300924,
+          "rmse": 3.782045062787655,
+          "mae_persistencia": 2.366147448015123,
+          "r2": 0.48944928562285417,
+          "mae_lgbm": 2.2344732327999264,
+          "mae_hgb": 1.4048465365983809
+        },
+        "30": {
+          "mae": 2.9940609638072235,
+          "rmse": 3.822182305656497,
+          "mae_persistencia": 2.3668835098335856,
+          "r2": 0.478112239059503,
+          "mae_lgbm": 2.2810075755359915,
+          "mae_hgb": 1.3975240675082576
+        }
+      },
+      "temperatura_maxima": {
+        "1": {
+          "mae": 2.76937029737392,
+          "rmse": 3.513609266269063,
+          "mae_persistencia": 3.058422046055115,
+          "r2": 0.6435281825009097,
+          "mae_lgbm": 2.19130640436993,
+          "mae_hgb": 1.9797252937607976
+        },
+        "2": {
+          "mae": 3.204928153801407,
+          "rmse": 4.034468956038651,
+          "mae_persistencia": 3.0586027190332326,
+          "r2": 0.5305950009648547,
+          "mae_lgbm": 2.62020337248381,
+          "mae_hgb": 2.3643713085112794
+        },
+        "3": {
+          "mae": 3.3523049205071063,
+          "rmse": 4.234076994661563,
+          "mae_persistencia": 3.0586027190332326,
+          "r2": 0.4829536162438345,
+          "mae_lgbm": 2.676819019324999,
+          "mae_hgb": 1.7516809785225729
+        },
+        "5": {
+          "mae": 3.4655858318791246,
+          "rmse": 4.3933029527560565,
+          "mae_persistencia": 3.0586027190332326,
+          "r2": 0.44344573144917226,
+          "mae_lgbm": 2.6498086042638036,
+          "mae_hgb": 1.7216950648933147
+        },
+        "7": {
+          "mae": 3.4851659038066503,
+          "rmse": 4.415532614612275,
+          "mae_persistencia": 3.0586027190332326,
+          "r2": 0.43763224241273624,
+          "mae_lgbm": 2.5373339433229627,
+          "mae_hgb": 1.727583453874753
+        },
+        "10": {
+          "mae": 3.495789188552339,
+          "rmse": 4.423212742352111,
+          "mae_persistencia": 3.058813751416698,
+          "r2": 0.43605342311618367,
+          "mae_lgbm": 2.629232096106938,
+          "mae_hgb": 1.729256787787944
+        },
+        "14": {
+          "mae": 3.4927097246109353,
+          "rmse": 4.426534680651327,
+          "mae_persistencia": 3.0598941798941803,
+          "r2": 0.43518306726345984,
+          "mae_lgbm": 2.6517326403219874,
+          "mae_hgb": 1.7313695512904657
+        },
+        "21": {
+          "mae": 3.5072831001346207,
+          "rmse": 4.462627480029794,
+          "mae_persistencia": 3.05987145557656,
+          "r2": 0.426302910397364,
+          "mae_lgbm": 2.5365342574845546,
+          "mae_hgb": 1.7418570492439134
+        },
+        "30": {
+          "mae": 3.677214726046427,
+          "rmse": 4.6488194566053505,
+          "mae_persistencia": 3.060582450832073,
+          "r2": 0.3729511139581322,
+          "mae_lgbm": 2.7020851106247243,
+          "mae_hgb": 1.7302209011998806
+        }
+      },
+      "umidade": {
+        "1": {
+          "mae": 7.133095024690436,
+          "rmse": 9.061567685283398,
+          "mae_persistencia": 7.868566837347181,
+          "r2": 0.30188043048489765,
+          "mae_lgbm": 6.023585982449794,
+          "mae_hgb": 5.426526782513365
+        },
+        "2": {
+          "mae": 8.03980400334373,
+          "rmse": 10.056936649390703,
+          "mae_persistencia": 7.868566837347181,
+          "r2": 0.157757794518309,
+          "mae_lgbm": 6.373720157222685,
+          "mae_hgb": 5.004118292257992
+        },
+        "3": {
+          "mae": 8.274972107083862,
+          "rmse": 10.28726377323278,
+          "mae_persistencia": 7.868566837347181,
+          "r2": 0.12380336153782223,
+          "mae_lgbm": 6.566524956181824,
+          "mae_hgb": 4.149524942246739
+        },
+        "5": {
+          "mae": 8.366861036182147,
+          "rmse": 10.400770336307449,
+          "mae_persistencia": 7.871220526947046,
+          "r2": 0.10867010964604591,
+          "mae_lgbm": 6.65378256042709,
+          "mae_hgb": 4.134305886731196
+        },
+        "7": {
+          "mae": 8.413596758933098,
+          "rmse": 10.439978328399699,
+          "mae_persistencia": 7.871220526947046,
+          "r2": 0.10304042302801993,
+          "mae_lgbm": 6.2612820011584995,
+          "mae_hgb": 4.525820871994631
+        },
+        "10": {
+          "mae": 8.395818785525371,
+          "rmse": 10.423219985217433,
+          "mae_persistencia": 7.871220526947046,
+          "r2": 0.10023963552649548,
+          "mae_lgbm": 6.572616975895733,
+          "mae_hgb": 4.938443286278284
+        },
+        "14": {
+          "mae": 8.42207574472956,
+          "rmse": 10.46460374226039,
+          "mae_persistencia": 7.872958569236704,
+          "r2": 0.09331970878580195,
+          "mae_lgbm": 6.86919839397884,
+          "mae_hgb": 4.1948396163719455
+        },
+        "21": {
+          "mae": 8.360662101006117,
+          "rmse": 10.38581961991125,
+          "mae_persistencia": 7.869655884504967,
+          "r2": 0.10205637492178969,
+          "mae_lgbm": 6.985729246396875,
+          "mae_hgb": 4.608726474259005
+        },
+        "30": {
+          "mae": 8.48245210397088,
+          "rmse": 10.535926895743453,
+          "mae_persistencia": 7.87195699449221,
+          "r2": 0.09372312209745715,
+          "mae_lgbm": 6.868432087417727,
+          "mae_hgb": 4.192048606328305
+        }
+      },
+      "precipitacao_mm": {
+        "1": {
+          "mae": 3.953665233703505,
+          "rmse": 8.40071127928977,
+          "mae_persistencia": 7.105719921104535,
+          "r2": 0.31399722999607976,
+          "acuracia_chuva": 0.7830708661417323,
+          "auc_chuva": 0.854574165282233
+        },
+        "2": {
+          "mae": 4.19144996103818,
+          "rmse": 8.5962863522054,
+          "mae_persistencia": 7.105719921104535,
+          "r2": 0.29961745904115167,
+          "acuracia_chuva": 0.7086614173228346,
+          "auc_chuva": 0.7833655684554537
+        },
+        "3": {
+          "mae": 4.2592304827100165,
+          "rmse": 8.575445776123166,
+          "mae_persistencia": 7.105719921104535,
+          "r2": 0.3062463741095097,
+          "acuracia_chuva": 0.7259842519685039,
+          "auc_chuva": 0.7749885081098646
+        },
+        "5": {
+          "mae": 4.293631874766395,
+          "rmse": 8.642094847276343,
+          "mae_persistencia": 7.105719921104535,
+          "r2": 0.2975114790418867,
+          "acuracia_chuva": 0.7318897637795276,
+          "auc_chuva": 0.7777088015510498
+        },
+        "7": {
+          "mae": 4.227358336244872,
+          "rmse": 8.538575650913362,
+          "mae_persistencia": 7.105719921104535,
+          "r2": 0.3063194383532179,
+          "acuracia_chuva": 0.7220472440944882,
+          "auc_chuva": 0.7610843704196524
+        },
+        "10": {
+          "mae": 4.264161071901965,
+          "rmse": 8.694485783600381,
+          "mae_persistencia": 7.105719921104535,
+          "r2": 0.2918678885244642,
+          "acuracia_chuva": 0.7157480314960629,
+          "auc_chuva": 0.7709314738685641
+        },
+        "14": {
+          "mae": 4.15688627985413,
+          "rmse": 8.562893807889441,
+          "mae_persistencia": 7.105719921104535,
+          "r2": 0.30525957277905985,
+          "acuracia_chuva": 0.7082677165354332,
+          "auc_chuva": 0.7676718991017035
+        },
+        "21": {
+          "mae": 4.293069688331946,
+          "rmse": 8.693800664171293,
+          "mae_persistencia": 7.105719921104535,
+          "r2": 0.2914739845709683,
+          "acuracia_chuva": 0.7106299212598424,
+          "auc_chuva": 0.7742035949806796
+        },
+        "30": {
+          "mae": 4.220753876925774,
+          "rmse": 8.647173697685682,
+          "mae_persistencia": 7.105719921104535,
+          "r2": 0.29810346737889787,
+          "acuracia_chuva": 0.7220472440944882,
+          "auc_chuva": 0.7777496628179629
+        }
+      },
+      "vento_velocidade_ms": {
+        "1": {
+          "mae": 3.7229428694718143,
+          "rmse": 5.490082348907271,
+          "mae_persistencia": 4.410355890209045,
+          "r2": 0.16925277134672756,
+          "mae_lgbm": 3.2109124050679747,
+          "mae_hgb": 2.7970656527858635
+        },
+        "2": {
+          "mae": 3.9671162139150704,
+          "rmse": 5.781618563107417,
+          "mae_persistencia": 4.410355890209045,
+          "r2": 0.08686422564045762,
+          "mae_lgbm": 3.196817025075246,
+          "mae_hgb": 2.29127004376834
+        },
+        "3": {
+          "mae": 3.9883557262368066,
+          "rmse": 5.789618692665437,
+          "mae_persistencia": 4.410776595656587,
+          "r2": 0.08050703749626402,
+          "mae_lgbm": 3.080532476693854,
+          "mae_hgb": 2.8774080402065265
+        },
+        "5": {
+          "mae": 3.979174320785637,
+          "rmse": 5.795242617355981,
+          "mae_persistencia": 4.410776595656587,
+          "r2": 0.08018308867082062,
+          "mae_lgbm": 3.4005056411159433,
+          "mae_hgb": 3.1935557800275616
+        },
+        "7": {
+          "mae": 3.998830821416187,
+          "rmse": 5.7962360985966095,
+          "mae_persistencia": 4.410776595656587,
+          "r2": 0.07871535738374676,
+          "mae_lgbm": 3.2599255031108547,
+          "mae_hgb": 3.109446353878765
+        },
+        "10": {
+          "mae": 3.981324349834181,
+          "rmse": 5.822041003714521,
+          "mae_persistencia": 4.410492013938501,
+          "r2": 0.07120480067891335,
+          "mae_lgbm": 3.2812624373910286,
+          "mae_hgb": 2.9679481283614537
+        },
+        "14": {
+          "mae": 3.9994144200214743,
+          "rmse": 5.803295885791295,
+          "mae_persistencia": 4.410492013938501,
+          "r2": 0.07675513235710522,
+          "mae_lgbm": 3.226376863693119,
+          "mae_hgb": 3.0733414632337244
+        },
+        "21": {
+          "mae": 4.02723667789425,
+          "rmse": 5.839057509180074,
+          "mae_persistencia": 4.409326814828996,
+          "r2": 0.06419990319131871,
+          "mae_lgbm": 3.344308269175538,
+          "mae_hgb": 2.858909761825123
+        },
+        "30": {
+          "mae": 4.025604624766524,
+          "rmse": 5.858901872799542,
+          "mae_persistencia": 4.410613985477931,
+          "r2": 0.056176510333424544,
+          "mae_lgbm": 3.374060980957689,
+          "mae_hgb": 3.1500101672162684
+        }
+      },
+      "pressao_hpa": {
+        "1": {
+          "mae": 2.400412393571489,
+          "rmse": 3.1840195677426957,
+          "mae_persistencia": 3.064022064143309,
+          "r2": 0.6646477110442837,
+          "mae_lgbm": 1.7705896285411076,
+          "mae_hgb": 1.5109667307596828
+        },
+        "2": {
+          "mae": 3.2094053606279216,
+          "rmse": 4.135726150612344,
+          "mae_persistencia": 3.064022064143309,
+          "r2": 0.4222003585162829,
+          "mae_lgbm": 2.5380023271358185,
+          "mae_hgb": 1.325867763531578
+        },
+        "3": {
+          "mae": 3.378291514093297,
+          "rmse": 4.3384755059451825,
+          "mae_persistencia": 3.064022064143309,
+          "r2": 0.3592606639245866,
+          "mae_lgbm": 2.5060940367419975,
+          "mae_hgb": 1.3349992418369354
+        },
+        "5": {
+          "mae": 3.4364904347713696,
+          "rmse": 4.402382211273706,
+          "mae_persistencia": 3.064060948189346,
+          "r2": 0.34038935095137157,
+          "mae_lgbm": 2.5845693522352846,
+          "mae_hgb": 1.3536318463130799
+        },
+        "7": {
+          "mae": 3.4173169314451295,
+          "rmse": 4.383632702214191,
+          "mae_persistencia": 3.064060948189346,
+          "r2": 0.34404306991135325,
+          "mae_lgbm": 2.622402312242089,
+          "mae_hgb": 1.3570274729958485
+        },
+        "10": {
+          "mae": 3.4368601185303036,
+          "rmse": 4.421431518533009,
+          "mae_persistencia": 3.064060948189346,
+          "r2": 0.3350617287402103,
+          "mae_lgbm": 2.723770189175541,
+          "mae_hgb": 1.3712728481506158
+        },
+        "14": {
+          "mae": 3.4159264114649153,
+          "rmse": 4.3786296250835495,
+          "mae_persistencia": 3.0628762746144695,
+          "r2": 0.34448682424093874,
+          "mae_lgbm": 2.6702310819007375,
+          "mae_hgb": 1.3603730587424991
+        },
+        "21": {
+          "mae": 3.3927993110173134,
+          "rmse": 4.34516027711085,
+          "mae_persistencia": 3.0619332989715637,
+          "r2": 0.3506809367797519,
+          "mae_lgbm": 2.7409126281139433,
+          "mae_hgb": 1.3663954501473958
+        },
+        "30": {
+          "mae": 3.4326221757750432,
+          "rmse": 4.396728211774414,
+          "mae_persistencia": 3.0621694894128693,
+          "r2": 0.3400611594437456,
+          "mae_lgbm": 2.7718139526146226,
+          "mae_hgb": 1.3746352790647989
+        }
+      },
+      "nebulosidade": {
+        "1": {
+          "mae": 1.9651294056110005,
+          "rmse": 2.374361797551651,
+          "mae_persistencia": 1.8694961833804506,
+          "r2": 0.1775004322901813,
+          "mae_lgbm": 1.3176046251658073,
+          "mae_hgb": 1.1960478012667102
+        },
+        "2": {
+          "mae": 2.3206638468843344,
+          "rmse": 2.7288211013398493,
+          "mae_persistencia": 1.8694961833804506,
+          "r2": 0.012243168656313187,
+          "mae_lgbm": 1.6015918007668997,
+          "mae_hgb": 1.0997230107699099
+        },
+        "3": {
+          "mae": 2.391094810805865,
+          "rmse": 2.8034266973682596,
+          "mae_persistencia": 1.8694961833804506,
+          "r2": 0.00022335749867046227,
+          "mae_lgbm": 1.7111829174535005,
+          "mae_hgb": 1.31459161787977
+        },
+        "5": {
+          "mae": 2.392993063775515,
+          "rmse": 2.798712376170451,
+          "mae_persistencia": 1.8694961833804506,
+          "r2": 7.234179843089717e-05,
+          "mae_lgbm": 1.6302515363305354,
+          "mae_hgb": 1.195195039465509
+        },
+        "7": {
+          "mae": 2.359930904733395,
+          "rmse": 2.7483519629372086,
+          "mae_persistencia": 1.8691183023022977,
+          "r2": 0.0004152884887880015,
+          "mae_lgbm": 1.687804877676275,
+          "mae_hgb": 1.2266945453226439
+        },
+        "10": {
+          "mae": 2.400155642110092,
+          "rmse": 2.8159597225587634,
+          "mae_persistencia": 1.8691183023022977,
+          "r2": 0.0,
+          "mae_lgbm": 1.7464748096225409,
+          "mae_hgb": 1.1002903463128468
+        },
+        "14": {
+          "mae": 2.3319092635925895,
+          "rmse": 2.7221555788148555,
+          "mae_persistencia": 1.869555192011795,
+          "r2": 0.00028196760834811043,
+          "mae_lgbm": 1.5934192914632073,
+          "mae_hgb": 1.0184595787272626
+        },
+        "21": {
+          "mae": 2.3855173255335664,
+          "rmse": 2.7844365194856966,
+          "mae_persistencia": 1.8694297929215071,
+          "r2": 0.00022742207489556687,
+          "mae_lgbm": 1.7669151192677162,
+          "mae_hgb": 1.2525587041103237
+        },
+        "30": {
+          "mae": 2.3689538256614484,
+          "rmse": 2.762757219089212,
+          "mae_persistencia": 1.8692792811652825,
+          "r2": 0.0004860977517642695,
+          "mae_lgbm": 1.7021471951137075,
+          "mae_hgb": 1.0898135063453906
+        }
+      }
+    }
+  },
+  "daily": [
+    {
+      "date": "2026-11-11",
+      "temperature": 20.5,
+      "temperatureMin": 12.6,
+      "temperatureMax": 26.6,
+      "humidity": 73.0,
+      "precipitation": 1.7,
+      "rainChance": 74.0,
+      "windSpeed": 9.8,
+      "pressure": 1020.0,
+      "cloudiness": 4.0,
+      "thermalAmplitude": 14.0,
+      "approximateDewPoint": 15.2,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-12",
+      "temperature": 22.1,
+      "temperatureMin": 16.5,
+      "temperatureMax": 28.8,
+      "humidity": 79.0,
+      "precipitation": 1.5,
+      "rainChance": 80.0,
+      "windSpeed": 11.6,
+      "pressure": 1017.0,
+      "cloudiness": 3.0,
+      "thermalAmplitude": 12.3,
+      "approximateDewPoint": 17.9,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-13",
+      "temperature": 22.2,
+      "temperatureMin": 16.4,
+      "temperatureMax": 28.1,
+      "humidity": 75.0,
+      "precipitation": 0.1,
+      "rainChance": 52.0,
+      "windSpeed": 10.6,
+      "pressure": 1016.0,
+      "cloudiness": 4.0,
+      "thermalAmplitude": 11.7,
+      "approximateDewPoint": 17.2,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-14",
+      "temperature": 23.8,
+      "temperatureMin": 17.1,
+      "temperatureMax": 31.2,
+      "humidity": 76.0,
+      "precipitation": 0.0,
+      "rainChance": 27.0,
+      "windSpeed": 9.1,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 14.0,
+      "approximateDewPoint": 18.9,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "date": "2026-11-15",
+      "temperature": 24.7,
+      "temperatureMin": 17.7,
+      "temperatureMax": 32.3,
+      "humidity": 77.0,
+      "precipitation": 0.0,
+      "rainChance": 29.0,
+      "windSpeed": 10.4,
+      "pressure": 1008.0,
+      "cloudiness": 3.0,
+      "thermalAmplitude": 14.6,
+      "approximateDewPoint": 20.2,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "date": "2026-11-16",
+      "temperature": 23.5,
+      "temperatureMin": 18.8,
+      "temperatureMax": 29.2,
+      "humidity": 79.0,
+      "precipitation": 0.9,
+      "rainChance": 90.0,
+      "windSpeed": 10.4,
+      "pressure": 1007.0,
+      "cloudiness": 6.0,
+      "thermalAmplitude": 10.4,
+      "approximateDewPoint": 19.3,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-17",
+      "temperature": 22.1,
+      "temperatureMin": 18.3,
+      "temperatureMax": 25.7,
+      "humidity": 83.0,
+      "precipitation": 7.5,
+      "rainChance": 96.0,
+      "windSpeed": 13.1,
+      "pressure": 1008.0,
+      "cloudiness": 6.0,
+      "thermalAmplitude": 7.3,
+      "approximateDewPoint": 18.7,
+      "condition": "Chuva Leve",
+      "icon": "🌧️"
+    },
+    {
+      "date": "2026-11-18",
+      "temperature": 21.0,
+      "temperatureMin": 18.0,
+      "temperatureMax": 23.8,
+      "humidity": 90.0,
+      "precipitation": 14.8,
+      "rainChance": 97.0,
+      "windSpeed": 10.8,
+      "pressure": 1008.0,
+      "cloudiness": 6.0,
+      "thermalAmplitude": 5.8,
+      "approximateDewPoint": 19.0,
+      "condition": "Chuva Moderada",
+      "icon": "🌧️"
+    },
+    {
+      "date": "2026-11-19",
+      "temperature": 20.8,
+      "temperatureMin": 17.0,
+      "temperatureMax": 25.1,
+      "humidity": 77.0,
+      "precipitation": 2.2,
+      "rainChance": 93.0,
+      "windSpeed": 10.5,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 8.1,
+      "approximateDewPoint": 16.2,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-20",
+      "temperature": 20.0,
+      "temperatureMin": 15.3,
+      "temperatureMax": 25.3,
+      "humidity": 76.0,
+      "precipitation": 0.0,
+      "rainChance": 43.0,
+      "windSpeed": 10.8,
+      "pressure": 1015.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.0,
+      "approximateDewPoint": 15.2,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-21",
+      "temperature": 21.6,
+      "temperatureMin": 16.9,
+      "temperatureMax": 27.0,
+      "humidity": 76.0,
+      "precipitation": 0.3,
+      "rainChance": 60.0,
+      "windSpeed": 14.0,
+      "pressure": 1012.0,
+      "cloudiness": 4.0,
+      "thermalAmplitude": 10.1,
+      "approximateDewPoint": 16.9,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-22",
+      "temperature": 20.7,
+      "temperatureMin": 18.4,
+      "temperatureMax": 23.0,
+      "humidity": 93.0,
+      "precipitation": 36.1,
+      "rainChance": 96.0,
+      "windSpeed": 12.2,
+      "pressure": 1007.0,
+      "cloudiness": 6.0,
+      "thermalAmplitude": 4.6,
+      "approximateDewPoint": 19.4,
+      "condition": "Chuva Moderada",
+      "icon": "🌧️"
+    },
+    {
+      "date": "2026-11-23",
+      "temperature": 23.8,
+      "temperatureMin": 18.5,
+      "temperatureMax": 29.0,
+      "humidity": 83.0,
+      "precipitation": 2.2,
+      "rainChance": 93.0,
+      "windSpeed": 8.7,
+      "pressure": 1005.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.5,
+      "approximateDewPoint": 20.3,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-24",
+      "temperature": 23.0,
+      "temperatureMin": 17.7,
+      "temperatureMax": 27.7,
+      "humidity": 79.0,
+      "precipitation": 3.4,
+      "rainChance": 89.0,
+      "windSpeed": 11.4,
+      "pressure": 1008.0,
+      "cloudiness": 3.0,
+      "thermalAmplitude": 10.0,
+      "approximateDewPoint": 18.9,
+      "condition": "Chuva Leve",
+      "icon": "🌧️"
+    },
+    {
+      "date": "2026-11-25",
+      "temperature": 21.5,
+      "temperatureMin": 16.4,
+      "temperatureMax": 26.1,
+      "humidity": 73.0,
+      "precipitation": 0.3,
+      "rainChance": 80.0,
+      "windSpeed": 12.2,
+      "pressure": 1012.0,
+      "cloudiness": 4.0,
+      "thermalAmplitude": 9.7,
+      "approximateDewPoint": 16.1,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-26",
+      "temperature": 20.8,
+      "temperatureMin": 12.9,
+      "temperatureMax": 26.5,
+      "humidity": 63.0,
+      "precipitation": 0.0,
+      "rainChance": 6.0,
+      "windSpeed": 14.5,
+      "pressure": 1012.0,
+      "cloudiness": 1.0,
+      "thermalAmplitude": 13.6,
+      "approximateDewPoint": 13.4,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "date": "2026-11-27",
+      "temperature": 22.7,
+      "temperatureMin": 16.9,
+      "temperatureMax": 27.4,
+      "humidity": 75.0,
+      "precipitation": 1.5,
+      "rainChance": 52.0,
+      "windSpeed": 13.1,
+      "pressure": 1013.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.5,
+      "approximateDewPoint": 17.7,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-28",
+      "temperature": 22.8,
+      "temperatureMin": 17.2,
+      "temperatureMax": 27.6,
+      "humidity": 75.0,
+      "precipitation": 1.5,
+      "rainChance": 53.0,
+      "windSpeed": 13.1,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.4,
+      "approximateDewPoint": 17.9,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-29",
+      "temperature": 23.0,
+      "temperatureMin": 17.5,
+      "temperatureMax": 27.8,
+      "humidity": 75.0,
+      "precipitation": 1.6,
+      "rainChance": 53.0,
+      "windSpeed": 13.2,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.2,
+      "approximateDewPoint": 18.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-11-30",
+      "temperature": 23.1,
+      "temperatureMin": 17.8,
+      "temperatureMax": 27.9,
+      "humidity": 75.0,
+      "precipitation": 1.6,
+      "rainChance": 54.0,
+      "windSpeed": 13.2,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.1,
+      "approximateDewPoint": 18.1,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-01",
+      "temperature": 23.3,
+      "temperatureMin": 18.2,
+      "temperatureMax": 28.1,
+      "humidity": 75.0,
+      "precipitation": 1.7,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 9.9,
+      "approximateDewPoint": 18.3,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-02",
+      "temperature": 23.4,
+      "temperatureMin": 18.2,
+      "temperatureMax": 28.2,
+      "humidity": 75.0,
+      "precipitation": 1.7,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.0,
+      "approximateDewPoint": 18.4,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-03",
+      "temperature": 23.4,
+      "temperatureMin": 18.3,
+      "temperatureMax": 28.3,
+      "humidity": 75.0,
+      "precipitation": 1.8,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.0,
+      "approximateDewPoint": 18.4,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-04",
+      "temperature": 23.5,
+      "temperatureMin": 18.4,
+      "temperatureMax": 28.4,
+      "humidity": 75.0,
+      "precipitation": 1.9,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.0,
+      "approximateDewPoint": 18.5,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-05",
+      "temperature": 23.6,
+      "temperatureMin": 18.4,
+      "temperatureMax": 28.5,
+      "humidity": 75.0,
+      "precipitation": 2.0,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.1,
+      "approximateDewPoint": 18.6,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-06",
+      "temperature": 23.7,
+      "temperatureMin": 18.5,
+      "temperatureMax": 28.6,
+      "humidity": 75.0,
+      "precipitation": 2.0,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1012.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.1,
+      "approximateDewPoint": 18.7,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-07",
+      "temperature": 23.7,
+      "temperatureMin": 18.6,
+      "temperatureMax": 28.7,
+      "humidity": 75.0,
+      "precipitation": 2.1,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1011.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.2,
+      "approximateDewPoint": 18.7,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-08",
+      "temperature": 23.8,
+      "temperatureMin": 18.7,
+      "temperatureMax": 28.8,
+      "humidity": 75.0,
+      "precipitation": 2.2,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1011.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.2,
+      "approximateDewPoint": 18.8,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-09",
+      "temperature": 23.9,
+      "temperatureMin": 18.7,
+      "temperatureMax": 29.0,
+      "humidity": 75.0,
+      "precipitation": 2.2,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1011.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.2,
+      "approximateDewPoint": 18.9,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "date": "2026-12-10",
+      "temperature": 23.9,
+      "temperatureMin": 18.8,
+      "temperatureMax": 29.1,
+      "humidity": 75.0,
+      "precipitation": 2.3,
+      "rainChance": 54.0,
+      "windSpeed": 13.3,
+      "pressure": 1011.0,
+      "cloudiness": 5.0,
+      "thermalAmplitude": 10.3,
+      "approximateDewPoint": 19.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    }
+  ],
+  "hourly": [
+    {
+      "time": "00:00",
+      "temperature": 14.7,
+      "humidity": 91.0,
+      "precipitation": 0.0,
+      "rainChance": 0.0,
+      "windSpeed": 8.4,
+      "pressure": 1020.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "01:00",
+      "temperature": 13.5,
+      "humidity": 94.0,
+      "precipitation": 0.0,
+      "rainChance": 0.0,
+      "windSpeed": 8.1,
+      "pressure": 1019.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "02:00",
+      "temperature": 12.8,
+      "humidity": 96.0,
+      "precipitation": 0.0,
+      "rainChance": 0.0,
+      "windSpeed": 7.9,
+      "pressure": 1019.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "03:00",
+      "temperature": 12.6,
+      "humidity": 97.0,
+      "precipitation": 0.0,
+      "rainChance": 0.0,
+      "windSpeed": 7.8,
+      "pressure": 1019.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "04:00",
+      "temperature": 12.8,
+      "humidity": 96.0,
+      "precipitation": 0.0,
+      "rainChance": 0.0,
+      "windSpeed": 7.9,
+      "pressure": 1019.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "05:00",
+      "temperature": 13.5,
+      "humidity": 94.0,
+      "precipitation": 0.0,
+      "rainChance": 0.0,
+      "windSpeed": 8.1,
+      "pressure": 1019.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "06:00",
+      "temperature": 14.7,
+      "humidity": 91.0,
+      "precipitation": 0.02,
+      "rainChance": 10.0,
+      "windSpeed": 8.4,
+      "pressure": 1020.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "07:00",
+      "temperature": 16.1,
+      "humidity": 87.0,
+      "precipitation": 0.03,
+      "rainChance": 15.0,
+      "windSpeed": 8.8,
+      "pressure": 1020.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "08:00",
+      "temperature": 17.8,
+      "humidity": 82.0,
+      "precipitation": 0.03,
+      "rainChance": 15.0,
+      "windSpeed": 9.3,
+      "pressure": 1020.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "09:00",
+      "temperature": 19.6,
+      "humidity": 76.0,
+      "precipitation": 0.04,
+      "rainChance": 20.0,
+      "windSpeed": 9.8,
+      "pressure": 1020.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "10:00",
+      "temperature": 21.4,
+      "humidity": 71.0,
+      "precipitation": 0.05,
+      "rainChance": 25.0,
+      "windSpeed": 10.3,
+      "pressure": 1020.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "11:00",
+      "temperature": 23.1,
+      "humidity": 66.0,
+      "precipitation": 0.06,
+      "rainChance": 30.0,
+      "windSpeed": 10.8,
+      "pressure": 1021.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "12:00",
+      "temperature": 24.6,
+      "humidity": 61.0,
+      "precipitation": 0.08,
+      "rainChance": 39.0,
+      "windSpeed": 11.2,
+      "pressure": 1021.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "13:00",
+      "temperature": 25.7,
+      "humidity": 58.0,
+      "precipitation": 0.1,
+      "rainChance": 49.0,
+      "windSpeed": 11.5,
+      "pressure": 1021.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "time": "14:00",
+      "temperature": 26.4,
+      "humidity": 56.0,
+      "precipitation": 0.12,
+      "rainChance": 59.0,
+      "windSpeed": 11.7,
+      "pressure": 1021.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "time": "15:00",
+      "temperature": 26.6,
+      "humidity": 55.0,
+      "precipitation": 0.14,
+      "rainChance": 69.0,
+      "windSpeed": 11.8,
+      "pressure": 1021.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "time": "16:00",
+      "temperature": 26.4,
+      "humidity": 56.0,
+      "precipitation": 0.15,
+      "rainChance": 74.0,
+      "windSpeed": 11.7,
+      "pressure": 1021.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "time": "17:00",
+      "temperature": 25.7,
+      "humidity": 58.0,
+      "precipitation": 0.15,
+      "rainChance": 74.0,
+      "windSpeed": 11.5,
+      "pressure": 1021.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "time": "18:00",
+      "temperature": 24.6,
+      "humidity": 61.0,
+      "precipitation": 0.15,
+      "rainChance": 74.0,
+      "windSpeed": 11.2,
+      "pressure": 1021.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "time": "19:00",
+      "temperature": 23.1,
+      "humidity": 66.0,
+      "precipitation": 0.14,
+      "rainChance": 69.0,
+      "windSpeed": 10.8,
+      "pressure": 1021.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "time": "20:00",
+      "temperature": 21.4,
+      "humidity": 71.0,
+      "precipitation": 0.12,
+      "rainChance": 59.0,
+      "windSpeed": 10.3,
+      "pressure": 1020.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "time": "21:00",
+      "temperature": 19.6,
+      "humidity": 76.0,
+      "precipitation": 0.1,
+      "rainChance": 49.0,
+      "windSpeed": 9.8,
+      "pressure": 1020.0,
+      "condition": "Garoa",
+      "icon": "🌦️"
+    },
+    {
+      "time": "22:00",
+      "temperature": 17.8,
+      "humidity": 82.0,
+      "precipitation": 0.08,
+      "rainChance": 39.0,
+      "windSpeed": 9.3,
+      "pressure": 1020.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    },
+    {
+      "time": "23:00",
+      "temperature": 16.1,
+      "humidity": 87.0,
+      "precipitation": 0.06,
+      "rainChance": 30.0,
+      "windSpeed": 8.8,
+      "pressure": 1020.0,
+      "condition": "Sem Chuva",
+      "icon": "☀️"
+    }
+  ]
+}
