@@ -14,7 +14,8 @@ concurrency:
 
 jobs:
   forecast:
-    runs-on: ubuntu-latest
+    # Fixado para manter dependências numéricas e resultados reproduzíveis.
+    runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
       PYTHONPATH: src
