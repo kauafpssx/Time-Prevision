@@ -1,0 +1,1 @@
+"""Pure weather domain rules."""

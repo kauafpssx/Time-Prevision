@@ -1,0 +1,96 @@
+{
+  "temperatura": {
+    "num_leaves": 24,
+    "max_depth": 4,
+    "learning_rate": 0.011302939920362371,
+    "min_child_samples": 23,
+    "subsample": 0.7554709158757928,
+    "colsample_bytree": 0.7085396127095583,
+    "reg_alpha": 1.1627201204016835,
+    "reg_lambda": 0.020874681332882276
+  },
+  "temperatura_minima": {
+    "num_leaves": 24,
+    "max_depth": 4,
+    "learning_rate": 0.011302939920362371,
+    "min_child_samples": 23,
+    "subsample": 0.7554709158757928,
+    "colsample_bytree": 0.7085396127095583,
+    "reg_alpha": 1.1627201204016835,
+    "reg_lambda": 0.020874681332882276
+  },
+  "temperatura_maxima": {
+    "num_leaves": 24,
+    "max_depth": 4,
+    "learning_rate": 0.011302939920362371,
+    "min_child_samples": 23,
+    "subsample": 0.7554709158757928,
+    "colsample_bytree": 0.7085396127095583,
+    "reg_alpha": 1.1627201204016835,
+    "reg_lambda": 0.020874681332882276
+  },
+  "umidade": {
+    "num_leaves": 123,
+    "max_depth": 3,
+    "learning_rate": 0.029466251557292406,
+    "min_child_samples": 6,
+    "subsample": 0.9906561731354215,
+    "colsample_bytree": 0.809678162898547,
+    "reg_alpha": 3.5494674697176327,
+    "reg_lambda": 3.7519155418879766
+  },
+  "precipitacao_mm": {
+    "clf": {
+      "num_leaves": 66,
+      "max_depth": 9,
+      "learning_rate": 0.017172542103877867,
+      "min_child_samples": 33,
+      "subsample": 0.836965827544817,
+      "colsample_bytree": 0.6185801650879991,
+      "reg_alpha": 0.1767218232266506,
+      "reg_lambda": 0.0042733023193754
+    },
+    "reg": {
+      "num_leaves": 93,
+      "max_depth": 7,
+      "learning_rate": 0.03721700609939043,
+      "min_child_samples": 19,
+      "subsample": 0.7626582241159543,
+      "colsample_bytree": 0.838817870015776,
+      "reg_alpha": 2.1236913712602963,
+      "reg_lambda": 0.22839022960038782,
+      "objective": "tweedie",
+      "tweedie_variance_power": 1.2
+    }
+  },
+  "vento_velocidade_ms": {
+    "num_leaves": 103,
+    "max_depth": 6,
+    "learning_rate": 0.019783299863842224,
+    "min_child_samples": 53,
+    "subsample": 0.8956113143850288,
+    "colsample_bytree": 0.9112031144424249,
+    "reg_alpha": 0.07085254488498813,
+    "reg_lambda": 0.20214787302752213
+  },
+  "pressao_hpa": {
+    "num_leaves": 24,
+    "max_depth": 4,
+    "learning_rate": 0.011302939920362371,
+    "min_child_samples": 23,
+    "subsample": 0.7554709158757928,
+    "colsample_bytree": 0.7085396127095583,
+    "reg_alpha": 1.1627201204016835,
+    "reg_lambda": 0.020874681332882276
+  },
+  "nebulosidade": {
+    "num_leaves": 15,
+    "max_depth": 9,
+    "learning_rate": 0.06781546492336318,
+    "min_child_samples": 45,
+    "subsample": 0.9085081386743783,
+    "colsample_bytree": 0.6296178606936361,
+    "reg_alpha": 0.021181366627251397,
+    "reg_lambda": 0.002682848665467022
+  }
+}
