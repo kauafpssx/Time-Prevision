@@ -42,6 +42,7 @@ def _dia(row):
         "confidence": row.get("confianca", "desconhecida"),
         "forecastMode": row.get("modo_previsao", "operacional"),
         "nwpAvailable": bool(row.get("nwp_disponivel", False)),
+        "rainProbabilitySource": row.get("fonte_probabilidade_chuva", "modelo_calibrado"),
     }
 
 

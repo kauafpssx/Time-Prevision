@@ -246,6 +246,18 @@ def prever_rapido(modelo, features, dias=7):
         for v, val in zip(VARS_NUMERICAS, valores):
             nova[v] = float(val)
         nova["chance_chuva"] = chance if chance is not None else chance_chuva(nova["precipitacao_mm"])
+        nova["fonte_probabilidade_chuva"] = "modelo_calibrado"
+        if len(linha_nwp) and "nwp_prob_chuva" in linha_nwp:
+            prob_nwp = linha_nwp.iloc[0]["nwp_prob_chuva"]
+            if pd.notna(prob_nwp):
+                chance_modelo = float(nova["chance_chuva"])
+                # O NWP ao vivo descreve o sistema meteorológico atual; o
+                # modelo local atua como correção estatística, não o contrário.
+                chance_blend = 0.35 * chance_modelo + 0.65 * float(prob_nwp)
+                if chance_modelo > 0:
+                    nova["precipitacao_mm"] *= chance_blend / chance_modelo
+                nova["chance_chuva"] = float(round(np.clip(chance_blend, 0, 100)))
+                nova["fonte_probabilidade_chuva"] = "blend_modelo_nwp"
         nova["limiar_chuva"] = limiar_chuva
         nova["nwp_disponivel"] = bool(len(linha_nwp))
         if i <= 5:
@@ -267,6 +279,7 @@ def prever_rapido(modelo, features, dias=7):
             # a frequência mensal como tendência separada.
             nova["chance_chuva"] = np.nan
             nova["precipitacao_mm"] = np.nan
+            nova["fonte_probabilidade_chuva"] = "climatologia_mensal"
             nova["confianca"] = "muito_baixa"
             nova["modo_previsao"] = "tendencia_climatica"
 

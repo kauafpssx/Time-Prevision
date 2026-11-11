@@ -36,6 +36,8 @@ DAILY_VARS = [
     "relative_humidity_2m_mean", "cloud_cover_mean",
 ]
 
+FUTURE_DAILY_VARS = DAILY_VARS + ["precipitation_probability_max"]
+
 RENAME = {
     "temperature_2m_max": "nwp_tmax",
     "temperature_2m_min": "nwp_tmin",
@@ -45,6 +47,7 @@ RENAME = {
     "surface_pressure_mean": "nwp_pressao",
     "relative_humidity_2m_mean": "nwp_umidade",
     "cloud_cover_mean": "nwp_nebulosidade_pct",
+    "precipitation_probability_max": "nwp_prob_chuva",
 }
 
 NWP_FEATS = ["nwp_tmax", "nwp_tmin", "nwp_tmed", "nwp_prcp", "nwp_vento_ms", "nwp_pressao", "nwp_umidade",
@@ -115,7 +118,7 @@ def buscar_previsao_futura(dias):
     dias_api = min(dias, 16)
     params = {
         "latitude": LAT, "longitude": LON,
-        "daily": ",".join(DAILY_VARS),
+        "daily": ",".join(FUTURE_DAILY_VARS),
         "timezone": "America/Sao_Paulo",
         "forecast_days": dias_api,
     }
@@ -125,4 +128,4 @@ def buscar_previsao_futura(dias):
         df = pd.DataFrame(r.json()["daily"])
         return _pos_processar(df)
     except Exception:
-        return pd.DataFrame(columns=["data"] + NWP_FEATS)
+        return pd.DataFrame(columns=["data"] + NWP_FEATS + ["nwp_prob_chuva"])
