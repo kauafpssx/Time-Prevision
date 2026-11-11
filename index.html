@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/weather.css">
   <script type="module" src="src/presentation/app.js"></script>
 </head>
 <body>
@@ -17,7 +18,7 @@
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Atmos, início"><span class="brand-mark">A</span><span>ATMOS<small>PREVISÃO LOCAL</small></span></a>
     <nav aria-label="Navegação principal"><a href="#hourly-section">Agora</a><a href="#forecast">Previsão</a><a href="#model">Modelo</a></nav>
-    <div class="header-actions"><span class="live-dot"><i></i> Atualização diária</span><button class="icon-button" id="themeToggle" aria-label="Alternar tema">◐</button></div>
+    <div class="header-actions"><span class="live-dot"><i></i> Atualização diária</span><button class="icon-button" id="themeToggle" aria-label="Alternar tema"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.5 0-1-.1-1.4A7 7 0 0 1 12 3Z"/></svg></button></div>
   </header>
 
   <main id="top" class="shell">
@@ -28,7 +29,7 @@
     <section class="ticker" aria-label="Resumo rápido" id="ticker"></section>
 
     <section class="section" id="hourly-section">
-      <div class="section-heading"><div><span class="kicker">RITMO DO DIA</span><h2>Temperatura hora a hora</h2><p>Variação estimada para as próximas 24 horas.</p></div><div class="legend"><span><i class="legend-temp"></i>Temperatura</span><span><i class="legend-rain"></i>Chuva</span></div></div>
+      <div class="section-heading"><div><span class="kicker">RITMO DO DIA</span><h2>Temperatura hora a hora</h2><p>Variação estimada para as próximas 24 horas.</p></div><div class="legend"><span><i class="legend-temp"></i>Temperatura</span><span><i class="legend-rain"></i>Chance de chuva</span></div></div>
       <div class="hourly-panel panel"><div class="chart-wrap" id="temperatureChart"></div><div class="hourly-strip" id="hourlyStrip"></div></div>
     </section>
 
