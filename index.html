@@ -16,7 +16,7 @@
   <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Atmos, início"><span class="brand-mark">A</span><span>ATMOS<small>PREVISÃO LOCAL</small></span></a>
-    <nav aria-label="Navegação principal"><a href="#hourly">Agora</a><a href="#forecast">Previsão</a><a href="#model">Modelo</a></nav>
+    <nav aria-label="Navegação principal"><a href="#hourly-section">Agora</a><a href="#forecast">Previsão</a><a href="#model">Modelo</a></nav>
     <div class="header-actions"><span class="live-dot"><i></i> Atualização diária</span><button class="icon-button" id="themeToggle" aria-label="Alternar tema">◐</button></div>
   </header>
 
@@ -27,9 +27,9 @@
 
     <section class="ticker" aria-label="Resumo rápido" id="ticker"></section>
 
-    <section class="section" id="hourly">
+    <section class="section" id="hourly-section">
       <div class="section-heading"><div><span class="kicker">RITMO DO DIA</span><h2>Temperatura hora a hora</h2><p>Variação estimada para as próximas 24 horas.</p></div><div class="legend"><span><i class="legend-temp"></i>Temperatura</span><span><i class="legend-rain"></i>Chuva</span></div></div>
-      <div class="hourly-panel panel"><div class="chart-wrap" id="temperatureChart"></div><div class="hourly-strip" id="hourly"></div></div>
+      <div class="hourly-panel panel"><div class="chart-wrap" id="temperatureChart"></div><div class="hourly-strip" id="hourlyStrip"></div></div>
     </section>
 
     <section class="section" id="forecast">
