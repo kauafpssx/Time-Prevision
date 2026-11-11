@@ -148,13 +148,10 @@ def _prever_ensamble(modelo, entrada):
                 valores.append(float("nan"))
                 continue
             if isinstance(m, dict) and "clf" in m:
-                # Precipitação em 2 estágios: chance de chuva x quantidade.
-                # proba*quant sozinho nunca chega a 0 (a regressão de
-                # quantidade só treina em dias que choveram, então tem piso
-                # > 0mm mesmo com proba baixa) - isso contradizia dias
-                # classificados "Sem Chuva" mostrando mm > 0. Corta o piso
-                # no mesmo limiar de classificar_clima e reescala o resto
-                # continuamente até proba=1 -> mm = quant.
+                # Precipitação em 2 estágios: probabilidade calibrada vezes
+                # a quantidade condicional caso chova. O resultado é o valor
+                # esperado, portanto não deve ser zerado por um limiar de
+                # classificação: 47% e 0 mm era um contrato contraditório.
                 proba = float(m["clf"].predict_proba(entrada)[:, 1][0])
                 if "calibrator" in m:
                     proba = float(m["calibrator"].predict([proba])[0])
@@ -162,9 +159,7 @@ def _prever_ensamble(modelo, entrada):
                 quant = float(m["reg"].predict(entrada)[0])
                 if var == "precipitacao_mm":
                     chance = int(round(proba * 100))
-                    limiar = limiar_chuva / 100.0
-                    fator = max(0.0, (proba - limiar) / (1.0 - limiar))
-                    valores.append(float(fator * quant))
+                    valores.append(float(proba * max(0.0, quant)))
                 else:
                     valores.append(float(proba * quant))
             elif isinstance(m, dict):
@@ -266,7 +261,12 @@ def prever_rapido(modelo, features, dias=7):
             historico_mes = df.loc[(df["data"].dt.month == data_alvo.month) &
                                    df["precipitacao_mm"].notna(), "precipitacao_mm"]
             if len(historico_mes):
-                nova["chance_chuva"] = float(round((historico_mes >= 0.1).mean() * 100))
+                nova["frequencia_climatica_chuva"] = float(round((historico_mes >= 0.1).mean() * 100))
+            # Depois do limite NWP não existe previsão diária confiável. Não
+            # inventamos uma sequência de dias secos/chuvosos: expomos apenas
+            # a frequência mensal como tendência separada.
+            nova["chance_chuva"] = np.nan
+            nova["precipitacao_mm"] = np.nan
             nova["confianca"] = "muito_baixa"
             nova["modo_previsao"] = "tendencia_climatica"
 

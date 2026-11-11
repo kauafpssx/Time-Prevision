@@ -57,6 +57,9 @@ jobs:
           assert data["model"]["metrics"]
           assert all("rainThreshold" in day and "confidence" in day for day in data["daily"])
           assert data["daily"][16]["forecastMode"] == "tendencia_climatica"
+          assert all(day["rainChance"] is not None and day["precipitation"] is not None for day in data["daily"][:16])
+          assert all(day["rainChance"] is None and day["precipitation"] is None for day in data["daily"][16:])
+          assert all(day["climateRainFrequency"] is not None for day in data["daily"][16:])
           rain_metrics = data["model"]["metrics"]["precipitacao_mm"]
           assert all("brier_calibrado" in values for values in rain_metrics.values())
           print("JSON validado com 30 dias, 24 horas, 8 outputs e métricas.")
