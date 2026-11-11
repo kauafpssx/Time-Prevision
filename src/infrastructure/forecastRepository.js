@@ -1,4 +1,4 @@
-import { validateForecast } from '../domain/forecast.js?v=20261111-2';
+import { validateForecast } from '../domain/forecast.js?v=20261111-3';
 
 export class ForecastRepository {
   constructor(url = './data/forecast.json') {

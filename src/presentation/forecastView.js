@@ -1,5 +1,5 @@
-import { displayValue, formatForecastDate } from '../domain/forecast.js?v=20261111-2';
-import { atmosphere, weatherIcon, weatherKind } from './weatherVisuals.js?v=20261111-2';
+import { displayValue, formatForecastDate } from '../domain/forecast.js?v=20261111-3';
+import { atmosphere, weatherIcon, weatherKind } from './weatherVisuals.js?v=20261111-3';
 
 const metricLabels={temperatura:['Temperatura','°C'],temperatura_minima:['Mínima','°C'],temperatura_maxima:['Máxima','°C'],umidade:['Umidade','%'],precipitacao_mm:['Precipitação','mm'],vento_velocidade_ms:['Vento','m/s'],pressao_hpa:['Pressão','hPa'],nebulosidade:['Nuvens','oktas']};
 const isClimateTrend=day=>day.forecastMode==='tendencia_climatica';

@@ -4,6 +4,8 @@ export function weatherKind(item = {}) {
   if (condition.includes('tempest') || condition.includes('temporal')) return 'storm';
   if (condition.includes('chuva forte') || condition.includes('chuva moderada')) return 'rain';
   if (condition.includes('chuva') || condition.includes('garoa')) return 'drizzle';
+  if (condition.includes('parcialmente')) return 'partly';
+  if (condition.includes('nublado') || condition.includes('neblina')) return 'cloudy';
   if (Number(item.cloudiness) >= 6) return 'cloudy';
   if (Number(item.cloudiness) >= 3) return 'partly';
   return 'clear';
