@@ -1,4 +1,5 @@
 export function weatherKind(item = {}) {
+  if (item.forecastMode === 'tendencia_climatica') return 'trend';
   const condition = String(item.condition || '').toLowerCase();
   if (condition.includes('tempest') || condition.includes('temporal')) return 'storm';
   if (condition.includes('chuva forte') || condition.includes('chuva moderada')) return 'rain';
@@ -15,12 +16,14 @@ export function weatherIcon(item, className = '') {
   const rain = '<g class="wi-rain"><path d="m17 38-2 5M26 38l-2 5M35 38l-2 5"/></g>';
   const drizzle = '<g class="wi-rain"><path d="m20 39-1 3M31 39l-1 3"/></g>';
   const lightning = '<path class="wi-lightning" d="m27 35-5 9 6-2-2 7 9-12-6 2 3-4Z"/>';
+  const trend = '<g class="wi-trend"><path d="M7 37h34M10 33l8-8 7 5 12-15"/><circle cx="10" cy="33" r="2"/><circle cx="18" cy="25" r="2"/><circle cx="25" cy="30" r="2"/><circle cx="37" cy="15" r="2"/></g>';
   let content = sun;
   if (kind === 'partly') content = `<g transform="translate(-5 -5) scale(.78)">${sun}</g>${cloud}`;
   if (kind === 'cloudy') content = cloud;
   if (kind === 'drizzle') content = `${cloud}${drizzle}`;
   if (kind === 'rain') content = `${cloud}${rain}`;
   if (kind === 'storm') content = `${cloud}${lightning}`;
+  if (kind === 'trend') content = trend;
   return `<svg class="weather-svg ${className}" data-kind="${kind}" viewBox="0 0 48 52" aria-hidden="true">${content}</svg>`;
 }
 
@@ -28,6 +31,7 @@ export function atmosphere(kind) {
   const clouds = '<i class="scene-cloud cloud-a"></i><i class="scene-cloud cloud-b"></i><i class="scene-cloud cloud-c"></i>';
   if (kind === 'clear') return '<div class="scene-sun"><i></i></div><div class="scene-haze"></div>';
   if (kind === 'partly' || kind === 'cloudy') return `<div class="scene-sun muted"><i></i></div>${clouds}`;
+  if (kind === 'trend') return `${clouds}<div class="scene-haze"></div>`;
   const drops = Array.from({ length: kind === 'drizzle' ? 22 : 42 }, (_, index) => `<i style="--x:${(index * 37) % 101}%;--delay:-${(index % 13) * .17}s;--speed:${.72 + (index % 7) * .08}s;--length:${12 + (index % 5) * 5}px"></i>`).join('');
   const flash = kind === 'storm' ? '<div class="scene-lightning"></div>' : '';
   return `${clouds}<div class="scene-rain">${drops}</div>${flash}`;
