@@ -55,7 +55,7 @@ HYPERPARAMS_PATH = MODEL_DIR / "hyperparams.json"
 LIMIAR_CHUVA = 0.1
 
 # --- Segurança de hardware / tempo (notebook, sem GPU útil para este dataset) ---
-N_JOBS_SEGURO = max(1, (os.cpu_count() or 4) - 4)  # deixa núcleos livres p/ o SO
+N_JOBS_SEGURO = max(1, int(os.getenv("TIME_PREVISION_N_JOBS", max(1, (os.cpu_count() or 4) - 1))))
 N_SPLITS_CV = 5                 # janelas expansivas de validação temporal
 OPTUNA_TRIALS_POR_ETAPA = 25    # teto de trials por busca
 OPTUNA_TIMEOUT_POR_ETAPA = 90   # segundos, o que vier primeiro cancela a busca
@@ -464,8 +464,15 @@ def treinar_e_avaliar(retune=False):
                 continue
 
     if not modelos:
-        log("❌ Nenhuma variável foi treinada com sucesso!")
-        return
+        raise RuntimeError("Nenhuma variável foi treinada com sucesso")
+
+    faltantes = {
+        var: [h for h in HORIZONTES_MODELO if h not in modelos.get(var, {})]
+        for var in VARS_NUMERICAS
+    }
+    faltantes = {var: horizontes for var, horizontes in faltantes.items() if horizontes}
+    if faltantes:
+        raise RuntimeError(f"Treinamento incompleto; variáveis/horizontes ausentes: {faltantes}")
 
     # Tabela de resultados (horizonte t+1, referência rápida — ver metricas.pkl p/ todos)
     banner("📈 RESULTADOS (horizonte t+1)", "Validação cruzada temporal (TimeSeriesSplit) - métricas honestas")
@@ -508,9 +515,7 @@ def treinar_e_avaliar(retune=False):
 
     with open(METRICAS_PATH, "wb") as f:
         import pickle
-        # Achata p/ {var: metricas_t+1} — formato que a aba Métricas da GUI já lê
-        metricas_flat = {v: por_h[1] for v, por_h in metricas.items() if 1 in por_h}
-        pickle.dump(metricas_flat, f)
+        pickle.dump(metricas, f)
     log(f"✓ Métricas salvas em: {METRICAS_PATH}")
 
     with open(HYPERPARAMS_PATH, "w", encoding="utf-8") as f:
@@ -550,3 +555,4 @@ if __name__ == "__main__":
         log(f"\n❌ ERRO: {e}")
         import traceback
         traceback.print_exc()
+        raise

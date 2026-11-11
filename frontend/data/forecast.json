@@ -5,9 +5,100 @@
     "country": "Brasil"
   },
   "timezone": "America/Sao_Paulo",
-  "generatedAt": "2026-11-11T11:32:15-03:00",
+  "generatedAt": "2026-11-11T11:45:54-03:00",
   "sourceLastDate": "2026-10-06",
   "sourceDelayDays": 36,
+  "model": {
+    "type": "LightGBM + HistGradientBoosting ensemble",
+    "strategy": "direct multi-horizon",
+    "horizons": [
+      1,
+      2,
+      3,
+      5,
+      7,
+      10,
+      14,
+      21,
+      30
+    ],
+    "outputs": [
+      "temperature",
+      "temperatureMin",
+      "temperatureMax",
+      "humidity",
+      "precipitation",
+      "windSpeed",
+      "pressure",
+      "cloudiness"
+    ],
+    "metrics": {
+      "temperatura": {
+        "mae": 1.71722250888697,
+        "rmse": 2.2903753113805854,
+        "mae_persistencia": 1.9579604544652351,
+        "r2": 0.8005298929295094,
+        "mae_lgbm": 1.3248497797257908,
+        "mae_hgb": 1.164875564045752
+      },
+      "temperatura_minima": {
+        "mae": 2.0102334042525944,
+        "rmse": 2.657187315367579,
+        "mae_persistencia": 2.366583427922815,
+        "r2": 0.7448254255339195,
+        "mae_lgbm": 1.5584620368399873,
+        "mae_hgb": 1.3474935501984473
+      },
+      "temperatura_maxima": {
+        "mae": 2.7584924729904077,
+        "rmse": 3.5008957100115046,
+        "mae_persistencia": 3.058024971623156,
+        "r2": 0.6455208579210503,
+        "mae_lgbm": 2.1531042818019017,
+        "mae_hgb": 1.8584150902801926
+      },
+      "umidade": {
+        "mae": 7.0995616447153385,
+        "rmse": 9.017871376029655,
+        "mae_persistencia": 7.873760336732561,
+        "r2": 0.3085537368582858,
+        "mae_lgbm": 6.024932061513078,
+        "mae_hgb": 5.2653442781659905
+      },
+      "precipitacao_mm": {
+        "mae": 3.9738112538974777,
+        "rmse": 8.480443647549986,
+        "mae_persistencia": 7.154451097804392,
+        "r2": 0.30746441419421794,
+        "acuracia_chuva": 0.7844621513944223,
+        "auc_chuva": 0.850527235894238
+      },
+      "vento_velocidade_ms": {
+        "mae": 3.715611979628578,
+        "rmse": 5.501792607501069,
+        "mae_persistencia": 4.415878678303286,
+        "r2": 0.16420398999248267,
+        "mae_lgbm": 3.2421525160280735,
+        "mae_hgb": 3.0011741483037855
+      },
+      "pressao_hpa": {
+        "mae": 2.3857222459716008,
+        "rmse": 3.1667286038953524,
+        "mae_persistencia": 3.0662438457280805,
+        "r2": 0.6682485824070364,
+        "mae_lgbm": 1.6345268176379983,
+        "mae_hgb": 1.5829387302245812
+      },
+      "nebulosidade": {
+        "mae": 1.9589060701170424,
+        "rmse": 2.373927100260326,
+        "mae_persistencia": 1.8706373693427891,
+        "r2": 0.17893108166594643,
+        "mae_lgbm": 1.517463400642975,
+        "mae_hgb": 1.325034555773734
+      }
+    }
+  },
   "daily": [
     {
       "date": "2026-10-07",
@@ -20,6 +111,8 @@
       "windSpeed": 12.1,
       "pressure": 1019.0,
       "cloudiness": 4.0,
+      "thermalAmplitude": 11.5,
+      "approximateDewPoint": 11.0,
       "condition": "Sem Chuva",
       "icon": "☀️"
     },
@@ -34,6 +127,8 @@
       "windSpeed": 10.4,
       "pressure": 1017.0,
       "cloudiness": 4.0,
+      "thermalAmplitude": 10.6,
+      "approximateDewPoint": 13.1,
       "condition": "Chuva Leve",
       "icon": "🌧️"
     },
@@ -48,6 +143,8 @@
       "windSpeed": 9.5,
       "pressure": 1016.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.5,
+      "approximateDewPoint": 14.5,
       "condition": "Chuva Leve",
       "icon": "🌧️"
     },
@@ -62,6 +159,8 @@
       "windSpeed": 9.7,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.5,
+      "approximateDewPoint": 14.5,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -76,6 +175,8 @@
       "windSpeed": 10.0,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.6,
+      "approximateDewPoint": 14.5,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -90,6 +191,8 @@
       "windSpeed": 9.9,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.3,
+      "approximateDewPoint": 14.6,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -104,6 +207,8 @@
       "windSpeed": 9.9,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.1,
+      "approximateDewPoint": 14.7,
       "condition": "Chuva Leve",
       "icon": "🌧️"
     },
@@ -118,6 +223,8 @@
       "windSpeed": 9.9,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 8.8,
+      "approximateDewPoint": 15.0,
       "condition": "Chuva Leve",
       "icon": "🌧️"
     },
@@ -132,6 +239,8 @@
       "windSpeed": 9.9,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 8.6,
+      "approximateDewPoint": 15.3,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -146,6 +255,8 @@
       "windSpeed": 9.9,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 8.3,
+      "approximateDewPoint": 15.6,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -160,6 +271,8 @@
       "windSpeed": 10.0,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 8.5,
+      "approximateDewPoint": 15.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -174,6 +287,8 @@
       "windSpeed": 10.1,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 8.7,
+      "approximateDewPoint": 15.9,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -188,6 +303,8 @@
       "windSpeed": 10.2,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 8.9,
+      "approximateDewPoint": 16.1,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -202,6 +319,8 @@
       "windSpeed": 10.2,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.1,
+      "approximateDewPoint": 16.3,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -216,6 +335,8 @@
       "windSpeed": 10.2,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.1,
+      "approximateDewPoint": 16.4,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -230,6 +351,8 @@
       "windSpeed": 10.2,
       "pressure": 1015.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.1,
+      "approximateDewPoint": 16.4,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -244,6 +367,8 @@
       "windSpeed": 10.1,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.1,
+      "approximateDewPoint": 16.5,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -258,6 +383,8 @@
       "windSpeed": 10.1,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.2,
+      "approximateDewPoint": 16.6,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -272,6 +399,8 @@
       "windSpeed": 10.1,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.2,
+      "approximateDewPoint": 16.7,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -286,6 +415,8 @@
       "windSpeed": 10.0,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.2,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -300,6 +431,8 @@
       "windSpeed": 10.0,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.2,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -314,6 +447,8 @@
       "windSpeed": 10.0,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.4,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -328,6 +463,8 @@
       "windSpeed": 10.1,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.6,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -342,6 +479,8 @@
       "windSpeed": 10.1,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 9.9,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -356,6 +495,8 @@
       "windSpeed": 10.2,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 10.1,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -370,6 +511,8 @@
       "windSpeed": 10.2,
       "pressure": 1014.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 10.3,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -384,6 +527,8 @@
       "windSpeed": 10.3,
       "pressure": 1013.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 10.5,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -398,6 +543,8 @@
       "windSpeed": 10.3,
       "pressure": 1013.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 10.7,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -412,6 +559,8 @@
       "windSpeed": 10.3,
       "pressure": 1013.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 10.9,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     },
@@ -426,6 +575,8 @@
       "windSpeed": 10.4,
       "pressure": 1013.0,
       "cloudiness": 5.0,
+      "thermalAmplitude": 11.2,
+      "approximateDewPoint": 16.8,
       "condition": "Garoa",
       "icon": "🌦️"
     }

@@ -61,7 +61,7 @@ python -m time_prevision.infrastructure.ml.train_model
 
 ## GitHub Actions e Pages
 
-O workflow `.github/workflows/daily-forecast.yml` roda às **06:17 no horário de Brasília**, atualiza os dados, gera o JSON e publica apenas `frontend/` na branch órfã `frontend`.
+O workflow `.github/workflows/daily-forecast.yml` roda às **06:17 no horário de Brasília** em Linux com 4 CPUs. A cada execução ele atualiza o banco, retreina todos os horizontes usando o cache de hiperparâmetros, gera um JSON com os outputs e métricas do modelo recém-treinado e publica apenas `frontend/` na branch órfã `frontend`.
 
 No GitHub:
 

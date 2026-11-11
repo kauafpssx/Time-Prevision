@@ -29,6 +29,8 @@ def _dia(row):
         "windSpeed": _numero(row["vento_velocidade_ms"]),
         "pressure": _numero(row["pressao_hpa"], 0),
         "cloudiness": _numero(row["nebulosidade"], 0),
+        "thermalAmplitude": _numero(row["amplitude_termica"]),
+        "approximateDewPoint": _numero(row["ponto_orvalho_aprox"]),
         "condition": condicao,
         "icon": emoji,
     }
@@ -56,6 +58,7 @@ def exportar(gateway: ForecastGateway, output, dias):
     previsao = gateway.predict(dias)
     ultima_data, atraso = gateway.data_status()
     horario = gateway.hourly(previsao.iloc[0])
+    metricas = gateway.metrics()
 
     payload = {
         "location": {"name": "Porto Alegre", "state": "RS", "country": "Brasil"},
@@ -63,6 +66,16 @@ def exportar(gateway: ForecastGateway, output, dias):
         "generatedAt": datetime.now(ZoneInfo("America/Sao_Paulo")).isoformat(timespec="seconds"),
         "sourceLastDate": ultima_data.strftime("%Y-%m-%d") if ultima_data is not None else None,
         "sourceDelayDays": int(atraso) if atraso is not None else None,
+        "model": {
+            "type": "LightGBM + HistGradientBoosting ensemble",
+            "strategy": "direct multi-horizon",
+            "horizons": [1, 2, 3, 5, 7, 10, 14, 21, 30],
+            "outputs": [
+                "temperature", "temperatureMin", "temperatureMax", "humidity",
+                "precipitation", "windSpeed", "pressure", "cloudiness"
+            ],
+            "metrics": metricas,
+        },
         "daily": [_dia(row) for _, row in previsao.iterrows()],
         "hourly": [_hora(row) for _, row in horario.iterrows()],
     }
