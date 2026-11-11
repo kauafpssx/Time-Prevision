@@ -23,6 +23,10 @@ jobs:
     steps:
       - name: Baixar código
         uses: actions/checkout@v7
+      - name: Preparar branch do frontend
+        run: |
+          git fetch origin frontend:frontend
+          git worktree add ../frontend-site frontend
       - name: Preparar Python
         uses: actions/setup-python@v7
         with:
@@ -39,26 +43,27 @@ jobs:
         run: python -m time_prevision.infrastructure.ml.train_model
       - name: Gerar previsão do site
         working-directory: backend
-        run: python -m time_prevision.interfaces.cli.export_forecast --dias 30
+        run: python -m time_prevision.interfaces.cli.export_forecast --dias 30 --output ../../frontend-site/data/forecast.json
       - name: Validar JSON publicado
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          data = json.loads(Path("frontend/data/forecast.json").read_text(encoding="utf-8"))
+          data = json.loads(Path("../frontend-site/data/forecast.json").read_text(encoding="utf-8"))
           assert len(data["daily"]) == 30
           assert len(data["hourly"]) == 24
           assert len(data["model"]["outputs"]) == 8
           assert data["model"]["metrics"]
           print("JSON validado com 30 dias, 24 horas, 8 outputs e métricas.")
           PY
-      - name: Publicar branch frontend
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: frontend
-          publish_dir: ./frontend
-          force_orphan: true
-          user_name: github-actions[bot]
-          user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: "chore: atualizar previsão diária"
+      - name: Atualizar somente o JSON na branch frontend
+        run: |
+          git -C ../frontend-site config user.name "github-actions[bot]"
+          git -C ../frontend-site config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C ../frontend-site add data/forecast.json
+          if git -C ../frontend-site diff --cached --quiet; then
+            echo "O JSON não mudou; nada para publicar."
+          else
+            git -C ../frontend-site commit -m "chore: atualizar previsão diária"
+            git -C ../frontend-site push origin frontend
+          fi

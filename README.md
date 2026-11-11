@@ -1,12 +1,12 @@
 # Time Prevision
 
-Previsão meteorológica experimental para Porto Alegre. O backend Python roda diariamente no GitHub Actions e publica um frontend estático em HTML, CSS e JavaScript puro.
+Backend de previsão meteorológica experimental para Porto Alegre. O Python roda diariamente no GitHub Actions; o site estático vive exclusivamente na branch `frontend`.
 
 O modelo treinado tem cerca de 177 MB e usa Git LFS. Antes do primeiro commit, execute `git lfs install`.
 
 ## Arquitetura
 
-O código versionado fica em apenas duas pastas principais:
+Na branch `main` fica somente o backend e a automação:
 
 ```text
 backend/
@@ -16,18 +16,9 @@ backend/
     ├── application/              # casos de uso
     ├── infrastructure/           # banco, ML e Open-Meteo
     └── interfaces/cli/           # comandos de entrada
-
-frontend/
-├── assets/css/                   # estilos
-├── data/                         # JSON publicado
-└── src/
-    ├── domain/                   # validação e formatação
-    ├── application/              # casos de uso
-    ├── infrastructure/           # acesso ao forecast.json
-    └── presentation/             # DOM e inicialização
 ```
 
-As dependências apontam para dentro: apresentação/CLI chama aplicação, aplicação usa contratos e regras, e detalhes externos ficam na infraestrutura.
+O HTML, CSS, JavaScript e `data/forecast.json` ficam somente na branch órfã `frontend`.
 
 ## Execução local
 
@@ -38,12 +29,8 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r backend\requirements.txt
 $env:PYTHONPATH = "backend\src"
-python -m time_prevision.interfaces.cli.export_forecast --dias 30
-cd frontend
-python -m http.server 8000
+python -m time_prevision.interfaces.cli.export_forecast --dias 30 --output forecast.json
 ```
-
-Abra `http://localhost:8000`.
 
 Atualizar a base meteorológica:
 
@@ -61,7 +48,7 @@ python -m time_prevision.infrastructure.ml.train_model
 
 ## GitHub Actions e Pages
 
-O workflow `.github/workflows/daily-forecast.yml` roda às **06:17 no horário de Brasília** em Linux com 4 CPUs. A cada execução ele atualiza o banco, retreina todos os horizontes usando o cache de hiperparâmetros, gera um JSON com os outputs e métricas do modelo recém-treinado e publica apenas `frontend/` na branch órfã `frontend`.
+O workflow `.github/workflows/daily-forecast.yml` roda às **06:17 no horário de Brasília** em Linux com 4 CPUs. A cada execução ele atualiza o banco, retreina todos os horizontes e abre a branch `frontend` em um worktree separado. Depois, altera e commita **somente** `data/forecast.json`; HTML, CSS e JavaScript permanecem intactos.
 
 No GitHub:
 
