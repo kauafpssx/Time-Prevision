@@ -139,6 +139,7 @@ def _prever_ensamble(modelo, entrada):
     Formato antigo: modelo único com .predict -> compatibilidade.
     """
     chance = None
+    limiar_chuva = float(DRY_DAY_THRESHOLD)
     if isinstance(modelo, dict):
         valores = []
         for var in VARS_NUMERICAS:
@@ -155,10 +156,13 @@ def _prever_ensamble(modelo, entrada):
                 # no mesmo limiar de classificar_clima e reescala o resto
                 # continuamente até proba=1 -> mm = quant.
                 proba = float(m["clf"].predict_proba(entrada)[:, 1][0])
+                if "calibrator" in m:
+                    proba = float(m["calibrator"].predict([proba])[0])
+                limiar_chuva = float(m.get("threshold", DRY_DAY_THRESHOLD / 100.0) * 100)
                 quant = float(m["reg"].predict(entrada)[0])
                 if var == "precipitacao_mm":
                     chance = int(round(proba * 100))
-                    limiar = LIMIAR_SEM_CHUVA_PCT / 100.0
+                    limiar = limiar_chuva / 100.0
                     fator = max(0.0, (proba - limiar) / (1.0 - limiar))
                     valores.append(float(fator * quant))
                 else:
@@ -173,7 +177,7 @@ def _prever_ensamble(modelo, entrada):
 
     valores = [_clamp(v, LIMITES.get(var, (-1e9, 1e9)))
                for v, var in zip(valores, VARS_NUMERICAS)]
-    return valores, chance
+    return valores, chance, limiar_chuva
 
 
 def _vizinhos_horizonte(i):
@@ -231,12 +235,13 @@ def prever_rapido(modelo, features, dias=7):
 
         h_baixo, h_alto = _vizinhos_horizonte(i)
         if h_baixo == h_alto:
-            valores, chance = _prever_um_horizonte(modelo, entrada, h_baixo)
+            valores, chance, limiar_chuva = _prever_um_horizonte(modelo, entrada, h_baixo)
         else:
-            v_baixo, c_baixo = _prever_um_horizonte(modelo, entrada, h_baixo)
-            v_alto, c_alto = _prever_um_horizonte(modelo, entrada, h_alto)
+            v_baixo, c_baixo, t_baixo = _prever_um_horizonte(modelo, entrada, h_baixo)
+            v_alto, c_alto, t_alto = _prever_um_horizonte(modelo, entrada, h_alto)
             w = (i - h_baixo) / (h_alto - h_baixo)
             valores = [vb + (va - vb) * w for vb, va in zip(v_baixo, v_alto)]
+            limiar_chuva = t_baixo + (t_alto - t_baixo) * w
             if c_baixo is not None and c_alto is not None:
                 chance = c_baixo + (c_alto - c_baixo) * w
             else:
@@ -246,6 +251,24 @@ def prever_rapido(modelo, features, dias=7):
         for v, val in zip(VARS_NUMERICAS, valores):
             nova[v] = float(val)
         nova["chance_chuva"] = chance if chance is not None else chance_chuva(nova["precipitacao_mm"])
+        nova["limiar_chuva"] = limiar_chuva
+        nova["nwp_disponivel"] = bool(len(linha_nwp))
+        if i <= 5:
+            nova["confianca"] = "alta"
+            nova["modo_previsao"] = "operacional"
+        elif i <= 10:
+            nova["confianca"] = "media"
+            nova["modo_previsao"] = "operacional"
+        elif i <= 16:
+            nova["confianca"] = "baixa"
+            nova["modo_previsao"] = "operacional"
+        else:
+            historico_mes = df.loc[(df["data"].dt.month == data_alvo.month) &
+                                   df["precipitacao_mm"].notna(), "precipitacao_mm"]
+            if len(historico_mes):
+                nova["chance_chuva"] = float(round((historico_mes >= 0.1).mean() * 100))
+            nova["confianca"] = "muito_baixa"
+            nova["modo_previsao"] = "tendencia_climatica"
 
         nova["amplitude_termica"] = nova["temperatura_maxima"] - nova["temperatura_minima"]
         nova["ponto_orvalho_aprox"] = nova["temperatura"] - ((100 - nova["umidade"]) / 5)
@@ -268,10 +291,11 @@ def classificar_clima(row):
     """
     prcp = row.get("precipitacao_mm", 0) or 0
     chance = row.get("chance_chuva")
+    limiar = row.get("limiar_chuva", LIMIAR_SEM_CHUVA_PCT)
     if chance is None:
         chance = chance_chuva(prcp)
 
-    return classify_weather(prcp, chance)
+    return classify_weather(prcp, chance, limiar)
 
 
 def chance_chuva(prcp_mm):
@@ -340,6 +364,7 @@ def gerar_previsao_horaria(linha_diaria):
     # por 24 horas (o que fazia a aba horária mostrar "Sem Chuva" o dia
     # inteiro mesmo quando a aba diária dizia "Garoa"/"Chuva").
     chance_dia = float(linha_diaria.get("chance_chuva", 0) or 0)
+    df["limiar_chuva"] = float(linha_diaria.get("limiar_chuva", LIMIAR_SEM_CHUVA_PCT))
     pico = float(prcp_h.max())
     if pico > 0:
         df["chance_chuva"] = np.clip(np.round(chance_dia * prcp_h / pico), 0, 100).astype(int)

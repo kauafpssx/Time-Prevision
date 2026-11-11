@@ -17,7 +17,11 @@ def _numero(valor, casas=1):
 
 
 def _dia(row):
-    condicao, emoji = classify_weather(row.get("precipitacao_mm", 0), row.get("chance_chuva", 0))
+    if row.get("modo_previsao") == "tendencia_climatica":
+        condicao, emoji = "Tendência climática", ""
+    else:
+        condicao, emoji = classify_weather(row.get("precipitacao_mm", 0), row.get("chance_chuva", 0),
+                                           row.get("limiar_chuva", 50))
     return {
         "date": pd.Timestamp(row["data"]).strftime("%Y-%m-%d"),
         "temperature": _numero(row["temperatura"]),
@@ -26,6 +30,7 @@ def _dia(row):
         "humidity": _numero(row["umidade"], 0),
         "precipitation": _numero(row["precipitacao_mm"]),
         "rainChance": _numero(row["chance_chuva"], 0),
+        "rainThreshold": _numero(row.get("limiar_chuva", 50), 0),
         "windSpeed": _numero(row["vento_velocidade_ms"]),
         "pressure": _numero(row["pressao_hpa"], 0),
         "cloudiness": _numero(row["nebulosidade"], 0),
@@ -33,6 +38,9 @@ def _dia(row):
         "approximateDewPoint": _numero(row["ponto_orvalho_aprox"]),
         "condition": condicao,
         "icon": emoji,
+        "confidence": row.get("confianca", "desconhecida"),
+        "forecastMode": row.get("modo_previsao", "operacional"),
+        "nwpAvailable": bool(row.get("nwp_disponivel", False)),
     }
 
 

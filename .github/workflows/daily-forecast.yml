@@ -54,6 +54,10 @@ jobs:
           assert len(data["hourly"]) == 24
           assert len(data["model"]["outputs"]) == 8
           assert data["model"]["metrics"]
+          assert all("rainThreshold" in day and "confidence" in day for day in data["daily"])
+          assert data["daily"][16]["forecastMode"] == "tendencia_climatica"
+          rain_metrics = data["model"]["metrics"]["precipitacao_mm"]
+          assert all("brier_calibrado" in values for values in rain_metrics.values())
           print("JSON validado com 30 dias, 24 horas, 8 outputs e métricas.")
           PY
       - name: Atualizar somente o JSON na branch frontend

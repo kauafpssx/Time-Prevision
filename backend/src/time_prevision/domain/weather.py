@@ -1,12 +1,13 @@
 """Rules that do not depend on pandas, databases, APIs or ML frameworks."""
 
-DRY_DAY_THRESHOLD = 40
+DRY_DAY_THRESHOLD = 50
 
 
-def classify_weather(precipitation_mm: float, rain_chance: float) -> tuple[str, str]:
+def classify_weather(precipitation_mm: float, rain_chance: float,
+                     rain_threshold: float = DRY_DAY_THRESHOLD) -> tuple[str, str]:
     precipitation_mm = precipitation_mm or 0
     rain_chance = rain_chance or 0
-    if rain_chance < DRY_DAY_THRESHOLD:
+    if rain_chance < rain_threshold:
         return "Sem Chuva", "☀️"
     if precipitation_mm < 2.5:
         return "Garoa", "🌦️"

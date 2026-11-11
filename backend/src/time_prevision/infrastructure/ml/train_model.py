@@ -34,7 +34,10 @@ import optuna
 import pandas as pd
 from lightgbm import LGBMClassifier, LGBMRegressor, early_stopping, log_evaluation
 from sklearn.ensemble import HistGradientBoostingRegressor
-from sklearn.metrics import accuracy_score, mean_absolute_error, r2_score, roc_auc_score
+from sklearn.isotonic import IsotonicRegression
+from sklearn.metrics import (accuracy_score, balanced_accuracy_score, brier_score_loss,
+                             f1_score, mean_absolute_error, precision_score, r2_score,
+                             recall_score, roc_auc_score)
 from sklearn.model_selection import TimeSeriesSplit
 
 from time_prevision.infrastructure.ml.features import VARS_NUMERICAS, _features_temporais, _lista_features, HORIZONTES_MODELO
@@ -308,6 +311,7 @@ def _treinar_precipitacao(X, y, cache=None):
     # Métricas honestas de CV (pipeline completo: proba * quantidade)
     tscv = TimeSeriesSplit(n_splits=N_SPLITS_CV)
     maes, rmses, r2s, maes_pers, accs, aucs = [], [], [], [], [], []
+    oof_probas, oof_reais = [], []
     for idx_tr, idx_te in tscv.split(X):
         corte_va = int(len(idx_tr) * 0.9)
         idx_tr_fit, idx_va = idx_tr[:corte_va], idx_tr[corte_va:]
@@ -326,6 +330,8 @@ def _treinar_precipitacao(X, y, cache=None):
         real = y.iloc[idx_te].values
         chuva_real = chuva.iloc[idx_te].values
         proba = clf.predict_proba(X.iloc[idx_te])[:, 1]
+        oof_probas.extend(proba.tolist())
+        oof_reais.extend(chuva_real.tolist())
         quant = reg.predict(X.iloc[idx_te])
         pred = proba * quant
 
@@ -339,6 +345,16 @@ def _treinar_precipitacao(X, y, cache=None):
         if len(np.unique(chuva_real)) >= 2:
             aucs.append(float(roc_auc_score(chuva_real, proba)))
 
+    oof_probas = np.asarray(oof_probas, dtype=float)
+    oof_reais = np.asarray(oof_reais, dtype=int)
+    calibrador = IsotonicRegression(out_of_bounds="clip", y_min=0.01, y_max=0.99)
+    calibrador.fit(oof_probas, oof_reais)
+    probas_calibradas = calibrador.predict(oof_probas)
+    candidatos = np.arange(0.30, 0.71, 0.01)
+    scores = [balanced_accuracy_score(oof_reais, probas_calibradas >= t) for t in candidatos]
+    limiar_otimo = float(candidatos[int(np.argmax(scores))])
+    classes_calibradas = probas_calibradas >= limiar_otimo
+
     metricas = {
         "mae": float(np.mean(maes)),
         "rmse": float(np.mean(rmses)),
@@ -346,6 +362,13 @@ def _treinar_precipitacao(X, y, cache=None):
         "r2": float(np.mean(r2s)),
         "acuracia_chuva": float(np.mean(accs)),
         "auc_chuva": float(np.mean(aucs)) if aucs else float("nan"),
+        "brier_bruto": float(brier_score_loss(oof_reais, oof_probas)),
+        "brier_calibrado": float(brier_score_loss(oof_reais, probas_calibradas)),
+        "limiar_chuva": limiar_otimo,
+        "balanced_accuracy_chuva": float(balanced_accuracy_score(oof_reais, classes_calibradas)),
+        "precision_chuva": float(precision_score(oof_reais, classes_calibradas, zero_division=0)),
+        "recall_chuva": float(recall_score(oof_reais, classes_calibradas, zero_division=0)),
+        "f1_chuva": float(f1_score(oof_reais, classes_calibradas, zero_division=0)),
     }
 
     # Refit de produção com TODO o histórico
@@ -355,7 +378,8 @@ def _treinar_precipitacao(X, y, cache=None):
     reg_final.fit(X[mask_final], y[mask_final])
 
     hiperparams = {"clf": melhores_clf, "reg": melhores_reg_final}
-    return {"clf": clf_final, "reg": reg_final}, metricas, hiperparams
+    return {"clf": clf_final, "reg": reg_final, "calibrator": calibrador,
+            "threshold": limiar_otimo}, metricas, hiperparams
 
 
 def treinar_e_avaliar(retune=False):
