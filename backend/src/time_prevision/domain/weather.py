@@ -1,6 +1,7 @@
 """Rules that do not depend on pandas, databases, APIs or ML frameworks."""
 
 DRY_DAY_THRESHOLD = 50
+MEANINGFUL_RAIN_MM = 1.0
 
 
 def classify_weather(precipitation_mm: float, rain_chance: float,

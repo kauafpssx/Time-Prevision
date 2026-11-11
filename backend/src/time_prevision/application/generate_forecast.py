@@ -57,6 +57,7 @@ def _hora(row):
         "pressure": _numero(row["pressao_hpa"], 0),
         "condition": row["tipo_precipitacao"],
         "icon": row["emoji_clima"],
+        "source": row.get("fonte_horaria", "desconhecida"),
     }
 
 

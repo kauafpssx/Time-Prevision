@@ -129,3 +129,37 @@ def buscar_previsao_futura(dias):
         return _pos_processar(df)
     except Exception:
         return pd.DataFrame(columns=["data"] + NWP_FEATS + ["nwp_prob_chuva"])
+
+
+def buscar_previsao_horaria(data):
+    """Retorna as 24 horas NWP reais para a data, sem curva horária sintética."""
+    data = pd.Timestamp(data).strftime("%Y-%m-%d")
+    params = {
+        "latitude": LAT,
+        "longitude": LON,
+        "start_date": data,
+        "end_date": data,
+        "hourly": ",".join([
+            "temperature_2m", "relative_humidity_2m", "precipitation",
+            "precipitation_probability", "wind_speed_10m", "surface_pressure",
+            "weather_code",
+        ]),
+        "timezone": "America/Sao_Paulo",
+    }
+    try:
+        r = requests.get(FORECAST_API, params=params, timeout=20)
+        r.raise_for_status()
+        hourly = pd.DataFrame(r.json()["hourly"])
+        return pd.DataFrame({
+            "data": pd.to_datetime(hourly["time"]),
+            "temperatura": hourly["temperature_2m"],
+            "umidade": hourly["relative_humidity_2m"],
+            "precipitacao_mm": hourly["precipitation"],
+            "chance_chuva": hourly["precipitation_probability"],
+            "vento_velocidade_ms": hourly["wind_speed_10m"] / 3.6,
+            "pressao_hpa": hourly["surface_pressure"],
+            "codigo_tempo": hourly["weather_code"],
+            "fonte_horaria": "nwp",
+        })
+    except Exception:
+        return pd.DataFrame()

@@ -53,6 +53,7 @@ jobs:
           data = json.loads(Path("../frontend-site/data/forecast.json").read_text(encoding="utf-8"))
           assert len(data["daily"]) == 30
           assert len(data["hourly"]) == 24
+          assert all(hour["source"] == "nwp" for hour in data["hourly"])
           assert len(data["model"]["outputs"]) == 8
           assert data["model"]["metrics"]
           assert all("rainThreshold" in day and "confidence" in day for day in data["daily"])

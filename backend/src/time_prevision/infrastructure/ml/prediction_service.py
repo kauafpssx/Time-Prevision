@@ -7,10 +7,12 @@ import numpy as np
 import pandas as pd
 import pickle
 import sqlite3
-from time_prevision.domain.weather import DRY_DAY_THRESHOLD, classify_weather
+from time_prevision.domain.weather import DRY_DAY_THRESHOLD, MEANINGFUL_RAIN_MM, classify_weather
 from time_prevision.infrastructure.ml.features import VARS_NUMERICAS, _features_temporais, HORIZONTES_MODELO
 from time_prevision.infrastructure.paths import DATABASE_PATH, MODEL_DIR
-from time_prevision.infrastructure.providers.open_meteo import NWP_FEATS, buscar_previsao_futura
+from time_prevision.infrastructure.providers.open_meteo import (
+    NWP_FEATS, buscar_previsao_futura, buscar_previsao_horaria,
+)
 
 # Caminhos
 DB_PATH = DATABASE_PATH
@@ -253,7 +255,12 @@ def prever_rapido(modelo, features, dias=7):
                 chance_modelo = float(nova["chance_chuva"])
                 # O NWP ao vivo descreve o sistema meteorológico atual; o
                 # modelo local atua como correção estatística, não o contrário.
-                chance_blend = 0.35 * chance_modelo + 0.65 * float(prob_nwp)
+                prcp_nwp = float(linha_nwp.iloc[0].get("nwp_prcp", 0) or 0)
+                # A POP do provedor inclui qualquer traço de precipitação.
+                # Convertemos para probabilidade de chuva relevante (>=1 mm)
+                # para manter o mesmo evento usado no treinamento.
+                prob_nwp_relevante = float(prob_nwp) * min(1.0, prcp_nwp / MEANINGFUL_RAIN_MM)
+                chance_blend = 0.20 * chance_modelo + 0.80 * prob_nwp_relevante
                 if chance_modelo > 0:
                     nova["precipitacao_mm"] *= chance_blend / chance_modelo
                 nova["chance_chuva"] = float(round(np.clip(chance_blend, 0, 100)))
@@ -319,13 +326,42 @@ def chance_chuva(prcp_mm):
     return int(round(100 * (1 - np.exp(-prcp_mm / 1.5))))
 
 
+def _condicao_codigo_nwp(codigo):
+    codigo = int(codigo)
+    if codigo == 0:
+        return "Céu Limpo"
+    if codigo in (1, 2):
+        return "Parcialmente Nublado"
+    if codigo == 3:
+        return "Nublado"
+    if codigo in (45, 48):
+        return "Neblina"
+    if 51 <= codigo <= 57:
+        return "Garoa"
+    if codigo in (61, 63, 80, 81):
+        return "Chuva Leve"
+    if codigo in (65, 67, 82):
+        return "Chuva Moderada"
+    if codigo >= 95:
+        return "Tempestade"
+    return "Nublado"
+
+
 def gerar_previsao_horaria(linha_diaria):
     """
-    Deriva a previsão das 24 horas do DIA ATUAL a partir da previsão diária do modelo.
-    Usa curva diurna de temperatura (mínima ~03h, máxima ~15h) e distribui as
-    demais variáveis ao longo do dia.
+    Usa a previsão NWP horária real. A curva diurna sintética abaixo existe
+    apenas como fallback explícito quando o provedor estiver indisponível.
     """
     data = linha_diaria["data"]
+    nwp_horario = buscar_previsao_horaria(data)
+    if len(nwp_horario) == 24:
+        nwp_horario["tipo_precipitacao"] = nwp_horario["codigo_tempo"].map(_condicao_codigo_nwp)
+        nwp_horario["emoji_clima"] = ""
+        return nwp_horario
+
+    # Fallback resiliente caso o provedor esteja temporariamente indisponível.
+    # A origem fica explícita no JSON para não confundir estimativa sintética
+    # com previsão horária meteorológica.
     tmin = float(linha_diaria["temperatura_minima"])
     tmax = float(linha_diaria["temperatura_maxima"])
     tmed = float(linha_diaria["temperatura"])
@@ -368,6 +404,7 @@ def gerar_previsao_horaria(linha_diaria):
         "precipitacao_mm": prcp_h,
         "vento_velocidade_ms": np.round(vento_h, 1),
         "pressao_hpa": np.round(press_h, 0),
+        "fonte_horaria": "fallback_sintetico",
     })
 
     # Chance horária derivada da chance diária do classificador, seguindo a

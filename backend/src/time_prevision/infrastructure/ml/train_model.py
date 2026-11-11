@@ -36,10 +36,11 @@ from lightgbm import LGBMClassifier, LGBMRegressor, early_stopping, log_evaluati
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.isotonic import IsotonicRegression
 from sklearn.metrics import (accuracy_score, balanced_accuracy_score, brier_score_loss,
-                             f1_score, mean_absolute_error, precision_score, r2_score,
+                             f1_score, fbeta_score, mean_absolute_error, precision_score, r2_score,
                              recall_score, roc_auc_score)
 from sklearn.model_selection import TimeSeriesSplit
 
+from time_prevision.domain.weather import MEANINGFUL_RAIN_MM
 from time_prevision.infrastructure.ml.features import VARS_NUMERICAS, _features_temporais, _lista_features, HORIZONTES_MODELO
 from time_prevision.infrastructure.paths import DATABASE_PATH, MODEL_DIR
 from time_prevision.infrastructure.providers import open_meteo
@@ -55,7 +56,7 @@ METRICAS_PATH = MODEL_DIR / "metricas.pkl"
 HYPERPARAMS_PATH = MODEL_DIR / "hyperparams.json"
 
 # Limiar de "dia com chuva" (mm)
-LIMIAR_CHUVA = 0.1
+LIMIAR_CHUVA = MEANINGFUL_RAIN_MM
 
 # --- Segurança de hardware / tempo (notebook, sem GPU útil para este dataset) ---
 N_JOBS_SEGURO = max(1, int(os.getenv("TIME_PREVISION_N_JOBS", max(1, (os.cpu_count() or 4) - 1))))
@@ -347,28 +348,42 @@ def _treinar_precipitacao(X, y, cache=None):
 
     oof_probas = np.asarray(oof_probas, dtype=float)
     oof_reais = np.asarray(oof_reais, dtype=int)
+    # Seleção de limiar e métrica em cauda temporal separada. Antes o mesmo
+    # OOF era usado para ajustar e avaliar a isotônica, deixando o Brier e o
+    # limiar otimistas. O calibrador final ainda usa todo OOF após a avaliação.
+    corte_cal = max(30, int(len(oof_probas) * 0.75))
+    calibrador_avaliacao = IsotonicRegression(out_of_bounds="clip", y_min=0.01, y_max=0.99)
+    calibrador_avaliacao.fit(oof_probas[:corte_cal], oof_reais[:corte_cal])
+    probas_avaliacao = calibrador_avaliacao.predict(oof_probas[corte_cal:])
+    reais_avaliacao = oof_reais[corte_cal:]
+    candidatos = np.arange(0.30, 0.71, 0.01)
+    # F0.5 favorece precisão sobre recall: para a condição exibida é melhor
+    # omitir uma garoa incerta do que anunciar chuva por muitos dias seguidos.
+    # A probabilidade contínua continua disponível para quem quiser a incerteza.
+    scores = [fbeta_score(reais_avaliacao, probas_avaliacao >= t, beta=0.5, zero_division=0)
+              for t in candidatos]
+    limiar_otimo = float(candidatos[int(np.argmax(scores))])
+    classes_calibradas = probas_avaliacao >= limiar_otimo
+
     calibrador = IsotonicRegression(out_of_bounds="clip", y_min=0.01, y_max=0.99)
     calibrador.fit(oof_probas, oof_reais)
-    probas_calibradas = calibrador.predict(oof_probas)
-    candidatos = np.arange(0.30, 0.71, 0.01)
-    scores = [balanced_accuracy_score(oof_reais, probas_calibradas >= t) for t in candidatos]
-    limiar_otimo = float(candidatos[int(np.argmax(scores))])
-    classes_calibradas = probas_calibradas >= limiar_otimo
 
     metricas = {
+        "evento_chuva_mm": float(LIMIAR_CHUVA),
         "mae": float(np.mean(maes)),
         "rmse": float(np.mean(rmses)),
         "mae_persistencia": float(np.mean(maes_pers)),
         "r2": float(np.mean(r2s)),
         "acuracia_chuva": float(np.mean(accs)),
         "auc_chuva": float(np.mean(aucs)) if aucs else float("nan"),
-        "brier_bruto": float(brier_score_loss(oof_reais, oof_probas)),
-        "brier_calibrado": float(brier_score_loss(oof_reais, probas_calibradas)),
+        "brier_bruto": float(brier_score_loss(reais_avaliacao, oof_probas[corte_cal:])),
+        "brier_calibrado": float(brier_score_loss(reais_avaliacao, probas_avaliacao)),
         "limiar_chuva": limiar_otimo,
-        "balanced_accuracy_chuva": float(balanced_accuracy_score(oof_reais, classes_calibradas)),
-        "precision_chuva": float(precision_score(oof_reais, classes_calibradas, zero_division=0)),
-        "recall_chuva": float(recall_score(oof_reais, classes_calibradas, zero_division=0)),
-        "f1_chuva": float(f1_score(oof_reais, classes_calibradas, zero_division=0)),
+        "balanced_accuracy_chuva": float(balanced_accuracy_score(reais_avaliacao, classes_calibradas)),
+        "precision_chuva": float(precision_score(reais_avaliacao, classes_calibradas, zero_division=0)),
+        "recall_chuva": float(recall_score(reais_avaliacao, classes_calibradas, zero_division=0)),
+        "f1_chuva": float(f1_score(reais_avaliacao, classes_calibradas, zero_division=0)),
+        "f0_5_chuva": float(fbeta_score(reais_avaliacao, classes_calibradas, beta=0.5, zero_division=0)),
     }
 
     # Refit de produção com TODO o histórico
