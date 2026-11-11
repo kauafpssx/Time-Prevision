@@ -1,6 +1,6 @@
-import { LoadForecast } from '../application/loadForecast.js';
-import { ForecastRepository } from '../infrastructure/forecastRepository.js';
-import { ForecastView } from './forecastView.js';
+import { LoadForecast } from '../application/loadForecast.js?v=20261111-2';
+import { ForecastRepository } from '../infrastructure/forecastRepository.js?v=20261111-2';
+import { ForecastView } from './forecastView.js?v=20261111-2';
 
 const view=new ForecastView();
 const loadForecast=new LoadForecast(new ForecastRepository());
