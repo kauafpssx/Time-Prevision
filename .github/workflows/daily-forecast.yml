@@ -23,8 +23,6 @@ jobs:
     steps:
       - name: Baixar código
         uses: actions/checkout@v7
-        with:
-          lfs: true
       - name: Preparar Python
         uses: actions/setup-python@v7
         with:
