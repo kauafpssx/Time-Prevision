@@ -19,6 +19,7 @@ nativamente (feature informativa só quando presente).
 """
 
 import sqlite3
+import time
 
 import pandas as pd
 import requests
@@ -146,20 +147,27 @@ def buscar_previsao_horaria(data):
         ]),
         "timezone": "America/Sao_Paulo",
     }
-    try:
-        r = requests.get(FORECAST_API, params=params, timeout=20)
-        r.raise_for_status()
-        hourly = pd.DataFrame(r.json()["hourly"])
-        return pd.DataFrame({
-            "data": pd.to_datetime(hourly["time"]),
-            "temperatura": hourly["temperature_2m"],
-            "umidade": hourly["relative_humidity_2m"],
-            "precipitacao_mm": hourly["precipitation"],
-            "chance_chuva": hourly["precipitation_probability"],
-            "vento_velocidade_ms": hourly["wind_speed_10m"] / 3.6,
-            "pressao_hpa": hourly["surface_pressure"],
-            "codigo_tempo": hourly["weather_code"],
-            "fonte_horaria": "nwp",
-        })
-    except Exception:
-        return pd.DataFrame()
+    ultimo_erro = None
+    for tentativa in range(3):
+        try:
+            r = requests.get(FORECAST_API, params=params, timeout=30)
+            r.raise_for_status()
+            hourly = pd.DataFrame(r.json()["hourly"])
+            if len(hourly) != 24:
+                raise ValueError(f"NWP horário retornou {len(hourly)} linhas, esperadas 24")
+            return pd.DataFrame({
+                "data": pd.to_datetime(hourly["time"]),
+                "temperatura": hourly["temperature_2m"],
+                "umidade": hourly["relative_humidity_2m"],
+                "precipitacao_mm": hourly["precipitation"],
+                "chance_chuva": hourly["precipitation_probability"],
+                "vento_velocidade_ms": hourly["wind_speed_10m"] / 3.6,
+                "pressao_hpa": hourly["surface_pressure"],
+                "codigo_tempo": hourly["weather_code"],
+                "fonte_horaria": "nwp",
+            })
+        except Exception as exc:
+            ultimo_erro = exc
+            if tentativa < 2:
+                time.sleep(2 ** tentativa)
+    raise RuntimeError(f"Previsão NWP horária indisponível após 3 tentativas: {ultimo_erro}")

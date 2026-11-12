@@ -348,81 +348,9 @@ def _condicao_codigo_nwp(codigo):
 
 
 def gerar_previsao_horaria(linha_diaria):
-    """
-    Usa a previsão NWP horária real. A curva diurna sintética abaixo existe
-    apenas como fallback explícito quando o provedor estiver indisponível.
-    """
+    """Usa exclusivamente a previsão NWP horária real; não inventa uma curva."""
     data = linha_diaria["data"]
     nwp_horario = buscar_previsao_horaria(data)
-    if len(nwp_horario) == 24:
-        nwp_horario["tipo_precipitacao"] = nwp_horario["codigo_tempo"].map(_condicao_codigo_nwp)
-        nwp_horario["emoji_clima"] = ""
-        return nwp_horario
-
-    # Fallback resiliente caso o provedor esteja temporariamente indisponível.
-    # A origem fica explícita no JSON para não confundir estimativa sintética
-    # com previsão horária meteorológica.
-    tmin = float(linha_diaria["temperatura_minima"])
-    tmax = float(linha_diaria["temperatura_maxima"])
-    tmed = float(linha_diaria["temperatura"])
-    umid = float(linha_diaria["umidade"])
-    prcp = float(linha_diaria["precipitacao_mm"])
-    vento = float(linha_diaria["vento_velocidade_ms"])
-    press = float(linha_diaria["pressao_hpa"])
-
-    horas = np.arange(24)
-
-    # Temperatura: curva diurna exata entre mínima prevista (03h) e máxima (15h)
-    amp = (tmax - tmin) / 2.0
-    centro = (tmax + tmin) / 2.0
-    temp_h = centro + amp * np.cos(2 * np.pi * (horas - 15) / 24)
-
-    # Umidade: inversamente proporcional à temperatura
-    hum_h = umid + 3.0 * (tmed - temp_h)
-    hum_h = np.clip(hum_h, 20, 100)
-
-    # Precipitação: total diário concentrado à tarde/noite
-    if pd.notna(prcp) and prcp > 0:
-        pesos = 0.15 + np.exp(-((horas - 17) ** 2) / (2 * 4.0 ** 2))
-        pesos[horas < 6] = 0.03
-        prcp_h = prcp * pesos / pesos.sum()
-        prcp_h = np.round(prcp_h, 2)
-    else:
-        prcp_h = np.zeros(24)
-
-    # Vento: mais forte à tarde
-    vento_h = np.maximum(vento * (1 + 0.2 * np.cos(2 * np.pi * (horas - 15) / 24)), 0)
-
-    # Pressão: leve variação ao longo do dia
-    press_h = press + 0.8 * np.sin(2 * np.pi * (horas - 9) / 24)
-
-    df = pd.DataFrame({
-        # pd.date_range evita DeprecationWarning do numpy 2.x (timedelta genérico)
-        "data": pd.date_range(start=data, periods=24, freq="1h"),
-        "temperatura": np.round(temp_h, 1),
-        "umidade": np.round(hum_h, 0),
-        "precipitacao_mm": prcp_h,
-        "vento_velocidade_ms": np.round(vento_h, 1),
-        "pressao_hpa": np.round(press_h, 0),
-        "fonte_horaria": "fallback_sintetico",
-    })
-
-    # Chance horária derivada da chance diária do classificador, seguindo a
-    # curva de concentração de chuva ao longo do dia. Normaliza pelo PICO
-    # (não pela soma): probabilidade não é aditiva como mm, então a hora de
-    # pico deve ficar perto da chance_dia inteira, não de uma fração diluída
-    # por 24 horas (o que fazia a aba horária mostrar "Sem Chuva" o dia
-    # inteiro mesmo quando a aba diária dizia "Garoa"/"Chuva").
-    chance_dia = float(linha_diaria.get("chance_chuva", 0) or 0)
-    df["limiar_chuva"] = float(linha_diaria.get("limiar_chuva", LIMIAR_SEM_CHUVA_PCT))
-    pico = float(prcp_h.max())
-    if pico > 0:
-        df["chance_chuva"] = np.clip(np.round(chance_dia * prcp_h / pico), 0, 100).astype(int)
-    else:
-        df["chance_chuva"] = 0
-
-    classificacoes = df.apply(classificar_clima, axis=1, result_type="expand")
-    df["tipo_precipitacao"] = classificacoes[0]
-    df["emoji_clima"] = classificacoes[1]
-
-    return df
+    nwp_horario["tipo_precipitacao"] = nwp_horario["codigo_tempo"].map(_condicao_codigo_nwp)
+    nwp_horario["emoji_clima"] = ""
+    return nwp_horario
